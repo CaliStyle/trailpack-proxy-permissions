@@ -10,25 +10,47 @@
   },
   "main": "index.js",
   "keywords": [
-    "Proxy Engine",
+    "proxy engine",
     "trailpack",
     "trails",
-    "trailjs"
+    "trailjs",
+    "permissions",
+    "acl"
   ],
   "dependencies": {
-    "trailpack": "latest"
+    "joi": "^9.0.4",
+    "lodash": "^4.15.0",
+    "trailpack": "^1.0.4",
+    "trails-model": "^1.0.0-beta-2",
+    "trails-policy": "^1.0.2",
+    "trails-service": "^1.0.0-beta-2"
   },
   "devDependencies": {
     "lodash": "^4.11.1",
-    "trails": "latest",
-    "eslint": "^2.4",
-    "eslint-config-trails": "^1.0.4",
-    "mocha": "^2.4.5",
-    "smokesignals": "^1.0.9",
-    "trailpack-core": "^1.0.0-beta-6"
+    "eslint": "^3.3.1",
+    "eslint-config-trails": "^1.0.7",
+    "express": "^4.14.0",
+    "mocha": "^3.0.2",
+    "passport-local": "^1.0.0",
+    "semantic-release": "^4.3.5",
+    "smokesignals": "^1.2.2",
+    "sqlite3": "^3.1.4",
+    "supertest": "^1.2.0",
+    "trailpack-core": "^1.0.1",
+    "trailpack-express": "^1.0.11",
+    "trailpack-footprints": "^1.0.1",
+    "trailpack-passport": "^1.0.0-beta-9",
+    "trailpack-router": "^1.0.7",
+    "trailpack-sequelize": "^1.0.5",
+    "trails": "^1.0.4",
+    "trails-controller": "^1.0.0-beta-2"
   },
   "scripts": {
-    "test": "eslint . && mocha"
+    "test": "eslint --fix . && mocha",
+    "publishPatch": "npm version patch && npm run push",
+    "publishMinor": "npm version minor && npm run push",
+    "publishMajor": "npm version major && npm run push",
+    "push": "git push --tags && git push"
   },
   "engines": {
     "node": ">= 4.0.0"
@@ -37,5 +59,5 @@
     "extends": "trails"
   },
   "repository": "git@github.com:CaliStyle/trailpack-proxy-permissions.git",
-  "license": "Apache-2.0"
+  "license": "MIT"
 }
