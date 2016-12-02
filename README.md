@@ -27,10 +27,10 @@ module.exports = {
 
 [npm-image]: https://img.shields.io/npm/v/trailpack-proxy-permissions.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/trailpack-proxy-permissions
-[ci-image]: https://img.shields.io/travis//trailpack-proxy-permissions/master.svg?style=flat-square
-[ci-url]: https://travis-ci.org//trailpack-proxy-permissions
-[daviddm-image]: http://img.shields.io/david//trailpack-proxy-permissions.svg?style=flat-square
-[daviddm-url]: https://david-dm.org//trailpack-proxy-permissions
-[codeclimate-image]: https://img.shields.io/codeclimate/github//trailpack-proxy-permissions.svg?style=flat-square
-[codeclimate-url]: https://codeclimate.com/github//trailpack-proxy-permissions
+[ci-image]: https://img.shields.io/circleci/project/github/CaliStyle/trailpack-proxy-permissions/master.svg
+[ci-url]: https://circleci.com/gh/CaliStyle/trailpack-proxy-permissions/tree/master
+[daviddm-image]: http://img.shields.io/david/calistyle/trailpack-proxy-permissions.svg?style=flat-square
+[daviddm-url]: https://david-dm.org/calistyle/trailpack-proxy-permissions
+[codeclimate-image]: https://img.shields.io/codeclimate/github/calistyle/trailpack-proxy-permissions.svg?style=flat-square
+[codeclimate-url]: https://codeclimate.com/github/calistyle/trailpack-proxy-permissions
 
