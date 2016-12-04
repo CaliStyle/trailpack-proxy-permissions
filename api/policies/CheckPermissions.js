@@ -107,7 +107,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
     const user = req.user
     const defaultRole = this.app.config.proxypermissions.defaultRole
 
-    const permissionsConfig = _.get(req.route, 'config.app.permissions')
+    const permissionsConfig = _.get(req.route, 'config.app.proxypermissions')
 
     if (!permissionsConfig) return next()
 

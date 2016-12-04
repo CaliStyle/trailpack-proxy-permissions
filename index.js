@@ -3,15 +3,15 @@
 const Trailpack = require('trailpack')
 const lib = require('./lib')
 
-module.exports = class PermissionsTrailpack extends Trailpack {
+module.exports = class ProxyPermissionsTrailpack extends Trailpack {
 
   /**
-   * Validate permissions config
+   * Validate proxypermissions config
    */
   validate () {
     if (!this.app.config.proxypermissions) {
       return Promise.reject(
-        new Error('config.permissions is absent, check it\'s present and loaded under index.js'))
+        new Error('config.proxypermissions is absent, check it\'s present and loaded under index.js'))
     }
     return lib.Validator.validateConfig(this.app.config.proxypermissions)
   }

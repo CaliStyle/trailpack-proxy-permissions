@@ -8,6 +8,12 @@
     "email": "scottwyatt86@gmail.com",
     "url": "https://cali-style.com"
   },
+  "contributors": [
+    {
+      "name": "Jaumard",
+      "url": "https://github.com/jaumard"
+    }
+  ],
   "main": "index.js",
   "keywords": [
     "proxy engine",

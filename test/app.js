@@ -70,7 +70,7 @@ const App = {
   config: {
     database: {
       stores: {
-        sqlite: {
+        sqlitedev: {
           database: 'ProxyPermissions',
           storage: './test/test.sqlite',
           host: '127.0.0.1',
@@ -79,7 +79,7 @@ const App = {
       },
 
       models: {
-        defaultStore: 'sqlite',
+        defaultStore: 'sqlitedev',
         migrate: 'drop'
       }
     },
@@ -101,7 +101,7 @@ const App = {
         handler: 'TestController.success',
         config: {
           app: {
-            proxypermissions: {
+            permissions: {
               resourceName: 'successRoute',
               roles: ['public']
             }
@@ -114,7 +114,7 @@ const App = {
         handler: 'TestController.failure',
         config: {
           app: {
-            proxypermissions: {
+            permissions: {
               resourceName: 'failureRoute',
               roles: ['test']
             }
@@ -127,7 +127,7 @@ const App = {
         handler: 'TestController.success',
         config: {
           app: {
-            proxypermissions: {
+            permissions: {
               resourceName: 'successLoggedRoute',
               roles: ['test']
             }
@@ -140,7 +140,7 @@ const App = {
         handler: 'TestController.failure',
         config: {
           app: {
-            proxypermissions: {
+            permissions: {
               resourceName: 'failureLoggedRoute',
               roles: ['admin']
             }
