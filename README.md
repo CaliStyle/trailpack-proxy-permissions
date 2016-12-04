@@ -35,7 +35,7 @@ module.exports = {
 
    packs: [
       ...
-      require('trailpack-acl'),
+      require('trailpack-proxy-permissions'),
       ...
    ]
    ...
@@ -44,7 +44,7 @@ module.exports = {
 
 Then permissions config :  
 ```js
-// config/permissions.js
+// config/proxypermissions.js
   defaultRole: null, //Role name to use for anonymous users
   userRoleFieldName: 'roles', // Name of the association field for Role under User model
   modelsAsResources: true, // Set all your models as resources automatically when initialize the database
@@ -61,7 +61,7 @@ You also need to have a User model like:
 ```
 const Model = require('trails-model')
 const ModelPassport = require('trailpack-passport/api/models/User') // If you use trailpack-pasport
-const ModelPermissions = require('trailpack-acl/api/models/User')
+const ModelPermissions = require('trailpack-proxy-permissions/api/models/User')
 class User extends Model {
   static config(app, Sequelize) {
     return {
@@ -137,7 +137,7 @@ This trailpack can manage owner permissions on model instance, to do this you ne
   action: 'create'
 }
 ```
-You can create this permisions with sequelize model, with fixtures options or with PermissionService like this : 
+You can create this permissions with sequelize model, with fixtures options or with PermissionService like this : 
 ```
 this.app.services.PermissionService.grant('roleName', 'modelName', 'create', 'owner').then(perm => () => {})
 .catch(err => this.app.log.error(err))
