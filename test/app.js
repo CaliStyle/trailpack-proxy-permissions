@@ -3,8 +3,8 @@ const _ = require('lodash')
 const smokesignals = require('smokesignals')
 const ModelPassport = require('trailpack-passport/api/models/User')
 const ModelPermissions = require('../api/models/User')
-const Model = require('trails-model')
-const Controller = require('trails-controller')
+const Model = require('trails/model')
+const Controller = require('trails/controller')
 
 const App = {
   pkg: {
@@ -223,8 +223,6 @@ const App = {
     },
     main: {
       packs: [
-        smokesignals.Trailpack,
-        require('trailpack-core'),
         require('trailpack-router'),
         require('trailpack-express'),
         require('trailpack-sequelize'),

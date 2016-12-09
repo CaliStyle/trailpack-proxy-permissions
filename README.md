@@ -88,15 +88,15 @@ class User extends Model {
 ## Usage
 
 ### Manage roles
-Use the native sequelize model under `this.app.orm.Roles`, if you need initial roles just add them on permissions config file under `fixtures.roles`.
+Use the native sequelize model under `this.app.orm.Roles`, if you need initial roles just add them on proxypermissions config file under `fixtures.roles`.
 
 ### Manage resources
-Use the native sequelize model under `this.app.orm.Resources`, if you need initial resources just add them on permissions config file under `fixtures.resources`.
+Use the native sequelize model under `this.app.orm.Resources`, if you need initial resources just add them on proxypermissions config file under `fixtures.resources`.
 
 ### Manage model permissions
 #### Static declaration under config
 ```
-//config/permissions.js
+//config/proxypermissions.js
 fixtures: {
     roles: [{
       name: 'roleName',
