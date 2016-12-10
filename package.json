@@ -1,7 +1,7 @@
 {
   "name": "trailpack-proxy-permissions",
   "version": "0.0.1",
-  "description": "ACL for Proxy Engine",
+  "description": "Permissions - Trailpack for Proxy Engine",
   "homepage": "https://cali-style.com",
   "author": {
     "name": "scott-wyatt",
