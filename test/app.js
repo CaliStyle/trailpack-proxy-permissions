@@ -1,6 +1,7 @@
 'use strict'
 const _ = require('lodash')
 const smokesignals = require('smokesignals')
+const fs = require('fs')
 const ModelPassport = require('trailpack-passport/api/models/User')
 const ModelPermissions = require('../api/models/User')
 const Model = require('trails/model')
@@ -148,7 +149,7 @@ const App = {
         }
       }
     ],
-    proxypermissions: {
+    proxyPermissions: {
       defaultRole: 'public',
       modelsAsResources: true,
       fixtures: {
@@ -252,6 +253,11 @@ const App = {
       }
     }
   }
+}
+
+const dbPath = __dirname + './test.sqlite'
+if (fs.existsSync(dbPath)) {
+  fs.unlinkSync(dbPath)
 }
 
 _.defaultsDeep(App, smokesignals.FailsafeConfig)

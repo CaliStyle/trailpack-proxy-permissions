@@ -1,2 +1,2 @@
 exports.trailpack = require('./trailpack')
-exports.proxypermissions = require('./proxypermissions')
+exports.proxyPermissions = require('./proxyPermissions')

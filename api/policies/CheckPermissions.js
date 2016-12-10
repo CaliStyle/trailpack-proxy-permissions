@@ -11,7 +11,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
   checkModel(req, res, next) {
     const modelName = req.params.model
     const user = req.user
-    const defaultRole = this.app.config.proxypermissions.defaultRole
+    const defaultRole = this.app.config.proxyPermissions.defaultRole
 
     let action = 'access'
     if (req.method === 'POST') {
@@ -105,9 +105,9 @@ module.exports = class CheckPermissionsPolicy extends Policy {
 
   checkRoute(req, res, next) {
     const user = req.user
-    const defaultRole = this.app.config.proxypermissions.defaultRole
+    const defaultRole = this.app.config.proxyPermissions.defaultRole
 
-    const permissionsConfig = _.get(req.route, 'config.app.proxypermissions')
+    const permissionsConfig = _.get(req.route, 'config.app.permissions')
 
     if (!permissionsConfig) return next()
 

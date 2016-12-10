@@ -7,7 +7,7 @@ module.exports = class PermissionService extends Service {
   /**
    *
    * @param roleName
-   * @returns {T|*}
+   * @returns {Promise.<T>|*}
    */
   findRole(roleName) {
     return this.app.services.FootprintService.find('role', roleName)
