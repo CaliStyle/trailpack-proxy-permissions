@@ -28,13 +28,11 @@
     "trailpack": "v2-latest"
   },
   "devDependencies": {
-    "lodash": "^4.11.1",
     "eslint": "^3.3.1",
     "eslint-config-trails": "^2",
     "express": "^4.14.0",
     "mocha": "^3.0.2",
     "passport-local": "^1.0.0",
-    "sails-disk": "^0.10.10",
     "semantic-release": "^4.3.5",
     "smokesignals": "v2-latest",
     "sqlite3": "^3.1.4",
