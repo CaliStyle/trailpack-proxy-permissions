@@ -5,7 +5,10 @@
 [![Dependency Status][daviddm-image]][daviddm-url]
 [![Code Climate][codeclimate-image]][codeclimate-url]
 
-ACL for Proxy Engine
+## Permissions built for speed, security, scalability, and love from [Cali Style Technologies](https://cali-style.com)
+
+The Proxy Engine Permissions is built to be used on Trailsjs with Proxy Engine.
+It's purpose is to allow for complex ERP style permissions down the model level.
 
 ## Dependencies
 ### Supported ORMs
@@ -42,9 +45,9 @@ module.exports = {
 }
 ```
 
-Then permissions config :  
+Then permissions config:  
 ```js
-// config/proxypermissions.js
+// config/proxyPermissions.js
   defaultRole: null, //Role name to use for anonymous users
   userRoleFieldName: 'roles', // Name of the association field for Role under User model
   modelsAsResources: true, // Set all your models as resources automatically when initialize the database
@@ -73,14 +76,15 @@ class User extends Model {
             // Apply permission specific stuff
             ModelPermissions.config(app, Sequelize).options.classMethods.associate(models)
             // Apply your specific stuff
-            
           }
         }
       }
     }
   }
   static schema(app, Sequelize) {
-    return {your stuff}
+    return {
+     // your stuff
+    }
   }
 }
 ```
@@ -88,10 +92,10 @@ class User extends Model {
 ## Usage
 
 ### Manage roles
-Use the native sequelize model under `this.app.orm.Roles`, if you need initial roles just add them on proxypermissions config file under `fixtures.roles`.
+Use the native sequelize model under `this.app.orm.Roles`, if you need initial roles just add them on proxyPermissions config file under `fixtures.roles`.
 
 ### Manage resources
-Use the native sequelize model under `this.app.orm.Resources`, if you need initial resources just add them on proxypermissions config file under `fixtures.resources`.
+Use the native sequelize model under `this.app.orm.Resources`, if you need initial resources just add them on proxyPermissions config file under `fixtures.resources`.
 
 ### Manage model permissions
 #### Static declaration under config
@@ -137,7 +141,8 @@ This trailpack can manage owner permissions on model instance, to do this you ne
   action: 'create'
 }
 ```
-You can create this permissions with sequelize model, with fixtures options or with PermissionService like this : 
+You can create this permissions with sequelize model, with fixtures options or with PermissionService like this:
+ 
 ```
 this.app.services.PermissionService.grant('roleName', 'modelName', 'create', 'owner').then(perm => () => {})
 .catch(err => this.app.log.error(err))
@@ -163,7 +168,7 @@ module.exports = class Item extends Model {
 }
 ```
 If the model is under a trailpack and you don't have access to it you can add a model with same name on your project, 
-let do this for the model User witch is already in trailpack-permissions and trailpack-passport:
+let's do this for the model User witch is already in trailpack-proxy-permissions and trailpack-passport:
  
 ```
 const ModelPassport = require('trailpack-passport/api/models/User')
@@ -195,12 +200,12 @@ module.exports = class User extends Model {
     }
 }
 ```
-Like this you can add owners permissions on all models you want.
+Like this you can add `owners` permissions on all preferred models.
 
-WARNING ! Currently owner permissions are not supported for `update` `destroy` actions on multiple items (with no ID) 
+WARNING! Currently `owner` permissions are not supported for `update` `destroy` actions on multiple items (with no ID) 
 
 #### Dynamically with PermissionService
-```
+```js
 // Grant a permission to create 'modelName' to 'roleName'
 this.app.services.PermissionService.grant('roleName', 'modelName', 'create').then(perm => () => {})
 .catch(err => this.app.log.error(err))
@@ -212,7 +217,7 @@ this.app.services.PermissionService.revoke('roleName', 'modelName', 'create').th
 
 ### Manage route permissions
 Route permissions can be added directly under route definition : 
-```
+```js
 {
   method: 'GET',
   path: '/api/myroute',
@@ -227,18 +232,18 @@ Route permissions can be added directly under route definition :
   }
 }
 ```
-When the DB is empty all routes permissions will be created, if you make any change after this you'll have to update permissions yourself, they are only create in DB when it's empty.
+When the DB is empty all routes permissions will be created, if you make any change after this you'll have to update permissions yourself.
 
-You can always use PermissionService anytime you want to grant or revoke routes permissions.
+You can use PermissionService anytime you want to grant or revoke routes permissions.
 
 ### Policies 
 You have 2 policies to manage permissions, they return a 403 when user is not allowed : 
 
 #### CheckPermissions.checkRoute
-This one will check your route permissions, if they're no permissions than the route is accessible. 
+This one will check your route permissions, if they are no explicit permissions then the route _is_ accessible. 
 The easy way to setup is : 
 
-```
+```js
 //config/policies.js
 '*': [ 'CheckPermissions.checkRoute' ]
 //or
@@ -247,8 +252,8 @@ ViewController: [ 'CheckPermissions.checkRoute' ]
 ```
 
 #### CheckPermissions.checkModel
-This one will check your model permissions, if there no permissions models are not accessible
-```
+This one will check your model permissions, if there are no explicit permissions models _are not_ accessible
+```js
 //config/policies.js
 FootprintController: [ 'CheckPermissions.checkModel' ] // To check permissions on models
 ```
