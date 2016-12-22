@@ -15,6 +15,18 @@ module.exports = class ProxyPermissionsTrailpack extends Trailpack {
     }
     return lib.Validator.validateConfig(this.app.config.proxyPermissions)
   }
+
+  /**
+   * Adds Routes, Policies, and Agenda
+   */
+  configure () {
+    return Promise.all([
+      lib.ProxyPermissions.addPolicies(this.app),
+      lib.ProxyPermissions.addRoutes(this.app),
+      lib.ProxyPermissions.addAgenda(this.app)
+    ])
+  }
+
   /**
    * Setup routes permissions and load fixtures if needed
    */
