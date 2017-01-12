@@ -7,6 +7,7 @@ module.exports = class Resource extends Model {
     return {
       //More informations about supported models options here : http://docs.sequelizejs.com/en/latest/docs/models-definition/#configuration
       options: {
+        underscored: true,
         classMethods: {
           associate: (models) => {
             models.Resource.hasMany(models.Permission, {

@@ -6,6 +6,7 @@ module.exports = class Role extends Model {
   static config(app, Sequelize) {
     return {
       options: {
+        underscored: true,
         classMethods: {
           associate: (models) => {
             models.Role.hasMany(models.Permission, {

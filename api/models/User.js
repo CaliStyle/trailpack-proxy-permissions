@@ -6,6 +6,7 @@ module.exports = class User extends Model {
   static config(app, Sequelize) {
     return {
       options: {
+        underscored: true,
         classMethods: {
           associate: (models) => {
             models.User.belongsToMany(models.Role, {
