@@ -32,10 +32,13 @@ module.exports = class ProxyPermissionsTrailpack extends Trailpack {
    * Setup routes permissions and load fixtures if needed
    */
   initialize() {
-    return lib.Utils.buildRoutesFixtures(this.app).then(fixtures => {
-      this.routesFixtures = fixtures
-      return lib.Utils.loadFixtures(this.app)
-    })
+    return Promise.all([
+      lib.ProxyPermissions.init(this.app),
+      lib.Utils.buildRoutesFixtures(this.app).then(fixtures => {
+        this.routesFixtures = fixtures
+        return lib.Utils.loadFixtures(this.app)
+      })
+    ])
   }
 
   constructor (app) {

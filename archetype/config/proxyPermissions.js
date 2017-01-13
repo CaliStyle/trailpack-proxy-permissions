@@ -12,5 +12,6 @@ module.exports = {
     roles: [],
     resources: [],
     permissions: []
-  }
+  },
+  subscribers: []
 }

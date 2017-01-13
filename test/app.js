@@ -212,7 +212,8 @@ const App = {
           resourceName: 'item',
           action: 'destroy'
         }]
-      }
+      },
+      subscribers: []
     },
     footprints: {
       controllers: false,
@@ -229,6 +230,7 @@ const App = {
         require('trailpack-sequelize'),
         require('trailpack-passport'),
         require('trailpack-footprints'),
+        require('trailpack-proxy-engine'),
         require('../') // trailpack
       ]
     },
