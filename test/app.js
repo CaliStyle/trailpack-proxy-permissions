@@ -212,8 +212,7 @@ const App = {
           resourceName: 'item',
           action: 'destroy'
         }]
-      },
-      subscribers: []
+      }
     },
     footprints: {
       controllers: false,
