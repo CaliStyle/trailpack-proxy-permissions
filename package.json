@@ -1,6 +1,6 @@
 {
   "name": "trailpack-proxy-permissions",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Permissions - Trailpack for Proxy Engine",
   "homepage": "https://cali-style.com",
   "author": {
@@ -30,22 +30,22 @@
   },
   "devDependencies": {
     "eslint": "^3.3.1",
-    "eslint-config-trails": "^2",
+    "eslint-config-trails": "^2.0.0",
     "express": "^4.14.0",
     "mocha": "^3.0.2",
     "lodash": "^4.15.0",
     "passport-local": "^1.0.0",
     "semantic-release": "^4.3.5",
-    "smokesignals": "v2-latest",
+    "smokesignals": "^2.0.0",
     "sqlite3": "^3.1.4",
     "supertest": "^3.0.0",
     "trailpack-express": "^2.0.2",
     "trailpack-passport": "^2.0.1",
     "trailpack-proxy-engine": "^0.0.10",
-    "trailpack-footprints": "v2-latest",
+    "trailpack-footprints": "^2.0.0",
     "trailpack-sequelize": "^2.0.0",
-    "trailpack-router": "v2-latest",
-    "trails": "v2-latest"
+    "trailpack-router": "^2.0.0",
+    "trails": "^2.0.0"
   },
   "scripts": {
     "test": "eslint --fix . && mocha",
