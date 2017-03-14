@@ -7,8 +7,8 @@
 
 ## Permissions built for speed, security, scalability, and love from [Cali Style Technologies](https://cali-style.com)
 
-The Proxy Engine Permissions is built to be used on Trailsjs with Proxy Engine.
-It's purpose is to allow for complex ERP style permissions down the model level.
+The Proxy Permissions is built to be used on Trailsjs with Proxy Engine.
+It's purpose is to allow for complex ERP style permissions down to the model level as well as restrict routes based on permissions.
 
 ## Dependencies
 ### Supported ORMs
@@ -61,7 +61,7 @@ Then permissions config:
 
 You also need to have a User model like: 
 
-```
+```js
 const Model = require('trails-model')
 const ModelPassport = require('trailpack-passport/api/models/User') // If you use trailpack-pasport
 const ModelPermissions = require('trailpack-proxy-permissions/api/models/User')
@@ -99,7 +99,7 @@ Use the native sequelize model under `this.app.orm.Resources`, if you need initi
 
 ### Manage model permissions
 #### Static declaration under config
-```
+```js
 //config/proxypermissions.js
 fixtures: {
     roles: [{
@@ -143,13 +143,13 @@ This trailpack can manage owner permissions on model instance, to do this you ne
 ```
 You can create this permissions with sequelize model, with fixtures options or with PermissionService like this:
  
-```
+```js
 this.app.services.PermissionService.grant('roleName', 'modelName', 'create', 'owner').then(perm => () => {})
 .catch(err => this.app.log.error(err))
 ```
 
 Then you need to declare an `owners` attributes on your models like this : 
-```
+```js
 module.exports = class Item extends Model {
   static config(app, Sequelize) {
     return {
@@ -170,7 +170,7 @@ module.exports = class Item extends Model {
 If the model is under a trailpack and you don't have access to it you can add a model with same name on your project, 
 let's do this for the model User witch is already in trailpack-proxy-permissions and trailpack-passport:
  
-```
+```js
 const ModelPassport = require('trailpack-passport/api/models/User')
 const ModelPermissions = require('../api/models/User')
 const Model = require('trails-model')
@@ -216,7 +216,7 @@ this.app.services.PermissionService.revoke('roleName', 'modelName', 'create').th
 ```
 
 ### Manage route permissions
-Route permissions can be added directly under route definition : 
+Route permissions can be added directly under route definition: 
 ```js
 {
   method: 'GET',
@@ -224,7 +224,7 @@ Route permissions can be added directly under route definition :
   handler: 'DefaultController.myroute',
   config: {
     app: {
-      permissions: {
+      proxyPermissions: {
         resourceName: 'myrouteId',
         roles: ['roleName']
       }

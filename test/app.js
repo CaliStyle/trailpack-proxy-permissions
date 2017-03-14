@@ -102,7 +102,7 @@ const App = {
         handler: 'TestController.success',
         config: {
           app: {
-            permissions: {
+            proxyPermissions: {
               resourceName: 'successRoute',
               roles: ['public']
             }
@@ -115,7 +115,7 @@ const App = {
         handler: 'TestController.failure',
         config: {
           app: {
-            permissions: {
+            proxyPermissions: {
               resourceName: 'failureRoute',
               roles: ['test']
             }
@@ -128,7 +128,7 @@ const App = {
         handler: 'TestController.success',
         config: {
           app: {
-            permissions: {
+            proxyPermissions: {
               resourceName: 'successLoggedRoute',
               roles: ['test']
             }
@@ -141,7 +141,7 @@ const App = {
         handler: 'TestController.failure',
         config: {
           app: {
-            permissions: {
+            proxyPermissions: {
               resourceName: 'failureLoggedRoute',
               roles: ['admin']
             }

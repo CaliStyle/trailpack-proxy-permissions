@@ -13,6 +13,13 @@ module.exports = class ProxyPermissionsTrailpack extends Trailpack {
       return Promise.reject(
         new Error('config.proxyPermissions is absent, check it\'s present and loaded under index.js'))
     }
+    if (
+      this.app.config.policies
+      && this.app.config.policies['*']
+      && this.app.config.policies['*'].indexOf('CheckPermissions.checkRoute') === -1
+    ) {
+      this.app.log.warn('ProxyPermissions Routes are unlocked! add \'*\' : [\'CheckPermissions.checkRoute\'] to config/policies.js')
+    }
     return lib.Validator.validateConfig(this.app.config.proxyPermissions)
   }
 
