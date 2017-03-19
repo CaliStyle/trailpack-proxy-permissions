@@ -1,6 +1,7 @@
 'use strict'
 
 const Trailpack = require('trailpack')
+const _ = require('lodash')
 const lib = require('./lib')
 
 module.exports = class ProxyPermissionsTrailpack extends Trailpack {
@@ -12,6 +13,18 @@ module.exports = class ProxyPermissionsTrailpack extends Trailpack {
     if (!this.app.config.proxyPermissions) {
       return Promise.reject(
         new Error('config.proxyPermissions is absent, check it\'s present and loaded under index.js'))
+    }
+    if (!_.includes(_.keys(this.app.packs), 'express')) {
+      return Promise.reject(new Error('This Trailpack only works for express!'))
+    }
+    if (!_.includes(_.keys(this.app.packs), 'sequelize')) {
+      return Promise.reject(new Error('This Trailpack only works for Sequelize!'))
+    }
+    if (!_.includes(_.keys(this.app.packs), 'passport')) {
+      return Promise.reject(new Error('This Trailpack requires passport!'))
+    }
+    if (!this.app.config.passport) {
+      return Promise.reject(new Error('No configuration found at config.passport!'))
     }
     if (
       this.app.config.policies
