@@ -48,15 +48,24 @@ module.exports = {
 Then permissions config:  
 ```js
 // config/proxyPermissions.js
-  defaultRole: null, //Role name to use for anonymous users
-  userRoleFieldName: 'roles', // Name of the association field for Role under User model
-  modelsAsResources: true, // Set all your models as resources automatically when initialize the database
-  //Initial data added when DB is empty
+module.exports = {
+  //Role name to use for anonymous users
+  defaultRole: 'public',
+  // Name of the association field for Role under User model
+  userRoleFieldName: 'roles',
+  // add all models as resources in database on initialization
+  modelsAsResources: true,
+  // Initial data added when DB is empty
   fixtures: {
     roles: [],
     resources: [],
     permissions: []
-  }
+  },
+  // The default super admin username
+  defaultAdminUsername: 'admin',
+  // The default super admin password
+  defaultAdminPassword: 'admin1234'
+}
 ```
 
 You also need to have a User model like: 
@@ -90,6 +99,9 @@ class User extends Model {
 ```
 
 ## Usage
+
+### Default Admin
+When your applications starts, if there are no users in your database, proxy-permissions will create a super admin using your defaults
 
 ### Manage roles
 Use the native sequelize model under `this.app.orm.Roles`, if you need initial roles just add them on proxyPermissions config file under `fixtures.roles`.

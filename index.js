@@ -59,7 +59,8 @@ module.exports = class ProxyPermissionsTrailpack extends Trailpack {
       lib.Utils.buildRoutesFixtures(this.app).then(fixtures => {
         this.routesFixtures = fixtures
         return lib.Utils.loadFixtures(this.app)
-      })
+      }),
+      lib.Utils.buildAdminFixtures(this.app)
     ])
   }
 

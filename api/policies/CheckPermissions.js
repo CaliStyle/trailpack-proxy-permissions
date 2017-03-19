@@ -27,7 +27,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
     if (user) {
       this.app.services.PermissionService.isUserAllowed(user, modelName, action).then(permission => {
         if (!permission || permission.length === 0) {
-          res.forbidden(`You doesn't have permissions to ${action} ${modelName}`)
+          res.forbidden(`You don't have permissions to ${action} ${modelName}`)
         }
         else {
           if (action !== 'create' && permission[0].relation === 'owner') {
@@ -45,7 +45,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
                   return next()
                 }
                 else {
-                  res.forbidden(`You doesn't have permissions to ${action} ${modelName}`)
+                  res.forbidden(`You don't have permissions to ${action} ${modelName}`)
                 }
               }
               else {
@@ -64,7 +64,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
                   return next()
                 }
                 else {
-                  res.forbidden(`You doesn't have permissions to ${action} ${modelName}`)
+                  res.forbidden(`You don't have permissions to ${action} ${modelName}`)
                 }
               }
               else {
@@ -74,7 +74,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
                       return next()
                     }
                   }
-                  res.forbidden(`You doesn't have permissions to ${action} ${modelName}:${req.params.id}`)
+                  res.forbidden(`You don't have permissions to ${action} ${modelName}:${req.params.id}`)
                 }).catch(err => {
                   this.app.log.error(err)
                   res.serverError(err)
@@ -91,7 +91,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
     else if (defaultRole) {
       this.app.services.PermissionService.isAllowed(defaultRole, modelName, action).then(permission => {
         if (!permission || permission.length === 0) {
-          res.forbidden(`You doesn't have permissions to ${action} ${modelName}`)
+          res.forbidden(`You don't have permissions to ${action} ${modelName}`)
         }
         else {
           return next()
@@ -99,7 +99,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
       }).catch(next)
     }
     else {
-      res.forbidden(`You doesn't have permissions to ${action} ${modelName}`)
+      res.forbidden(`You don't have permissions to ${action} ${modelName}`)
     }
   }
 
@@ -114,7 +114,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
     if (user) {
       this.app.services.PermissionService.isUserAllowed(user, permissionsConfig.resourceName, 'access').then(permission => {
         if (!permission || permission.length === 0) {
-          res.forbidden(`You doesn't have permissions to access ${req.originalUrl}`)
+          res.forbidden(`You don't have permissions to access ${req.originalUrl}`)
         }
         else {
           return next()
@@ -124,7 +124,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
     else if (defaultRole) {
       this.app.services.PermissionService.isAllowed(defaultRole, permissionsConfig.resourceName, 'access').then(permission => {
         if (!permission || permission.length === 0) {
-          res.forbidden(`You doesn't have permissions to access ${req.originalUrl}`)
+          res.forbidden(`You don't have permissions to access ${req.originalUrl}`)
         }
         else {
           return next()
@@ -132,7 +132,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
       }).catch(next)
     }
     else {
-      res.forbidden(`You doesn't have permissions to access ${req.originalUrl}`)
+      res.forbidden(`You don't have permissions to access ${req.originalUrl}`)
     }
   }
 }

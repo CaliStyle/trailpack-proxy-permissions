@@ -7,10 +7,14 @@ module.exports = {
   userRoleFieldName: 'roles',
   // add all models as resources in database on initialization
   modelsAsResources: true,
-  //Initial data added when DB is empty
+  // Initial data added when DB is empty
   fixtures: {
     roles: [],
     resources: [],
     permissions: []
-  }
+  },
+  // The default super admin username
+  defaultAdminUsername: 'admin',
+  // The default super admin password
+  defaultAdminPassword: 'admin1234'
 }

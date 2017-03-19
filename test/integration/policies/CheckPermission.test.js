@@ -5,7 +5,7 @@ const assert = require('assert')
 const supertest = require('supertest')
 
 describe('CheckPermission', () => {
-  let request, agent
+  let request, agent, agentId
 
   before(done => {
     request = supertest('http://localhost:3000')
@@ -18,7 +18,8 @@ describe('CheckPermission', () => {
       .expect(200)
       .end((err, res) => {
         assert.equal(res.body.redirect, '/')
-        assert.equal(res.body.user.id, 1)
+        assert.ok(res.body.user.id)
+        agentId = res.body.user.id
 
         global.app.services.FootprintService.find('user', res.body.user.id).then(user => {
           return global.app.services.PermissionService.addRoleToUser(user, 'test')
@@ -29,6 +30,20 @@ describe('CheckPermission', () => {
   it('should exist', () => {
     assert(global.app.api.policies['CheckPermissions'])
     assert(global.app.policies['CheckPermissions'])
+  })
+
+  describe('SuperAdmin', () => {
+    it('should check that super admin exists', done => {
+      global.app.services.FootprintService.find('user', {username: global.app.config.proxyPermissions.defaultAdminUsername})
+        .then(admins => {
+          assert.equal(admins[0].username, global.app.config.proxyPermissions.defaultAdminUsername)
+          assert.equal(admins[0].roles[0].name, 'admin')
+          done()
+        })
+        .catch(err => {
+          done(err)
+        })
+    })
   })
 
   describe('CheckModelPermissions', () => {
@@ -55,7 +70,7 @@ describe('CheckPermission', () => {
         .expect(403)
         .end((err, res) => {
           assert.equal(res.body.code, 'E_FORBIDDEN')
-          assert.equal(res.body.message, 'You doesn\'t have permissions to access resource')
+          assert.equal(res.body.message, 'You don\'t have permissions to access resource')
           done(err)
         })
     })
@@ -76,7 +91,7 @@ describe('CheckPermission', () => {
         .expect(403)
         .end((err, res) => {
           assert.equal(res.body.code, 'E_FORBIDDEN')
-          assert.equal(res.body.message, 'You doesn\'t have permissions to access resource')
+          assert.equal(res.body.message, 'You don\'t have permissions to access resource')
           done(err)
         })
     })
@@ -96,7 +111,7 @@ describe('CheckPermission', () => {
         .expect(403)
         .end((err, res) => {
           assert.equal(res.body.code, 'E_FORBIDDEN')
-          assert.equal(res.body.message, 'You doesn\'t have permissions to access /failure/public/permissions')
+          assert.equal(res.body.message, 'You don\'t have permissions to access /failure/public/permissions')
           done(err)
         })
     })
@@ -115,7 +130,7 @@ describe('CheckPermission', () => {
         .expect(403)
         .end((err, res) => {
           assert.equal(res.body.code, 'E_FORBIDDEN')
-          assert.equal(res.body.message, 'You doesn\'t have permissions to access /failure/logged/permissions')
+          assert.equal(res.body.message, 'You don\'t have permissions to access /failure/logged/permissions')
           done(err)
         })
     })
@@ -128,19 +143,19 @@ describe('CheckPermission', () => {
       adminAgent
         .post('/api/auth/local/register')
         .set('Accept', 'application/json') //set header for this test
-        .send({username: 'admin', password: 'adminadmin', email: 'admin@admin.ad'})
+        .send({username: 'anotheradmin', password: 'adminadmin', email: 'admin@admin.ad'})
         .expect(200)
         .end((err, res) => {
           assert.equal(res.body.redirect, '/')
-          assert.equal(res.body.user.id, 2)
-
+          assert.ok(res.body.user.id)
+          // console.log('THIS USER', res.body.user.id)
           global.app.services.FootprintService.find('user', res.body.user.id).then(user => {
             return global.app.services.PermissionService.addRoleToUser(user, 'admin')
           }).then(user => {
             return global.app.services.FootprintService.create('item', {
               name: 'test'
             }).then(item => {
-              return item.addOwner(1)
+              return item.addOwner(agentId)
             }).then(item => {
               return global.app.services.FootprintService.create('item', {
                 name: 'test'
@@ -155,6 +170,7 @@ describe('CheckPermission', () => {
         .set('Accept', 'application/json') //set header for this test
         .expect(200)
         .end((err, res) => {
+          console.log(res.body)
           assert.equal(res.body.length, 1)
           assert.equal(res.body[0].id, 1)
           assert.equal(res.body[0].name, 'test')
@@ -193,7 +209,7 @@ describe('CheckPermission', () => {
         .expect(403)
         .end((err, res) => {
           assert.equal(res.body.code, 'E_FORBIDDEN')
-          assert.equal(res.body.message, 'You doesn\'t have permissions to update item:1')
+          assert.equal(res.body.message, 'You don\'t have permissions to update item:1')
           done(err)
         })
     })
