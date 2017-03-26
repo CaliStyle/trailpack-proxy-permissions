@@ -76,6 +76,12 @@ const App = {
           storage: './test/test.sqlite',
           host: '127.0.0.1',
           dialect: 'sqlite'
+        },
+        uploads: {
+          database: 'ProxyPermissions',
+          storage: './test/test.uploads.sqlite',
+          host: '127.0.0.1',
+          dialect: 'sqlite'
         }
       },
 
@@ -257,8 +263,13 @@ const App = {
 }
 
 const dbPath = __dirname + './test.sqlite'
+const dbUploadPath = __dirname + './test.uploads.sqlite'
 if (fs.existsSync(dbPath)) {
   fs.unlinkSync(dbPath)
+}
+
+if (fs.existsSync(dbUploadPath)) {
+  fs.unlinkSync(dbUploadPath)
 }
 
 _.defaultsDeep(App, smokesignals.FailsafeConfig)
