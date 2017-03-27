@@ -7,6 +7,9 @@ const Controller = require('trails/controller')
  * @description Generated Trails.js Controller.
  */
 module.exports = class UserController extends Controller {
+  update(req, res) {
+
+  }
   /**
    * upload CSV
    * @param req

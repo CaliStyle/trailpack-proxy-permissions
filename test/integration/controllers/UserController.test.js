@@ -37,7 +37,8 @@ describe('UserController', () => {
         done()
       })
   })
-  it('It should process upload', (done) => {
+  it.skip('It should process upload', (done) => {
+    // console.log('UPLOAD ID', uploadID)
     agent
       .post(`/api/user/processUpload/${ uploadID }`)
       .send({})

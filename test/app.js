@@ -165,7 +165,7 @@ const App = {
         }, {
           name: 'admin',
           publicName: 'Admin'
-        }, {
+        },{
           name: 'public' ,
           publicName: 'Public'
         }],
