@@ -99,6 +99,11 @@ const App = {
             usernameField: 'username'// If you want to enable both username and email just remove this field
           }
         }
+      },
+      onUserLogin: {
+        user: (req, app, user) => {
+          return Promise.resolve(user)
+        }
       }
     },
     routes: [
