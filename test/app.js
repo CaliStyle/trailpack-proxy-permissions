@@ -2,7 +2,7 @@
 const _ = require('lodash')
 const smokesignals = require('smokesignals')
 const fs = require('fs')
-const ModelPassport = require('trailpack-passport/api/models/User')
+const ModelPassport = require('trailpack-proxy-passport/api/models/User')
 const ModelPermissions = require('../api/models/User')
 const Model = require('trails/model')
 const Controller = require('trails/controller')
@@ -90,7 +90,7 @@ const App = {
         migrate: 'drop'
       }
     },
-    passport: {
+    proxyPassport: {
       strategies: {
         //Enable local strategy
         local: {
@@ -233,7 +233,7 @@ const App = {
         require('trailpack-router'),
         require('trailpack-express'),
         require('trailpack-sequelize'),
-        require('trailpack-passport'),
+        require('trailpack-proxy-passport'),
         require('trailpack-footprints'),
         require('trailpack-proxy-engine'),
         require('../') // trailpack

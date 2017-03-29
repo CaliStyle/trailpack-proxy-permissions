@@ -72,7 +72,7 @@ You also need to have a User model like:
 
 ```js
 const Model = require('trails-model')
-const ModelPassport = require('trailpack-passport/api/models/User') // If you use trailpack-pasport
+const ModelPassport = require('trailpack-proxy-passport/api/models/User') // If you use trailpack-pasport
 const ModelPermissions = require('trailpack-proxy-permissions/api/models/User')
 class User extends Model {
   static config(app, Sequelize) {
@@ -180,10 +180,10 @@ module.exports = class Item extends Model {
 }
 ```
 If the model is under a trailpack and you don't have access to it you can add a model with same name on your project, 
-let's do this for the model User witch is already in trailpack-proxy-permissions and trailpack-passport:
+let's do this for the model User witch is already in trailpack-proxy-permissions and trailpack-proxy-passport:
  
 ```js
-const ModelPassport = require('trailpack-passport/api/models/User')
+const ModelPassport = require('trailpack-proxy-passport/api/models/User')
 const ModelPermissions = require('../api/models/User')
 const Model = require('trails-model')
 module.exports = class User extends Model {

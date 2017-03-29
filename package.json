@@ -1,6 +1,6 @@
 {
   "name": "trailpack-proxy-permissions",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Permissions - Trailpack for Proxy Engine",
   "homepage": "https://cali-style.com",
   "author": {
@@ -28,12 +28,12 @@
     "babyparse": "^0.4.6",
     "joi": "^10.2.2",
     "multer": "^1.2.1",
+    "passport-local": "^1.0.0",
     "proxy-engine-errors": "^1.0.1",
     "proxy-engine-helpers": "^1.0.2",
+    "shortid": "^2.2.8",
     "trailpack": "^2.0.0",
-    "trailpack-passport": "^2.1.0",
-    "passport-local": "^1.0.0",
-    "shortid": "^2.2.8"
+    "trailpack-proxy-passport": "^0.0.2"
   },
   "devDependencies": {
     "eslint": "^3.3.1",

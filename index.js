@@ -20,11 +20,11 @@ module.exports = class ProxyPermissionsTrailpack extends Trailpack {
     if (!_.includes(_.keys(this.app.packs), 'sequelize')) {
       return Promise.reject(new Error('This Trailpack only works for Sequelize!'))
     }
-    if (!_.includes(_.keys(this.app.packs), 'passport')) {
-      return Promise.reject(new Error('This Trailpack requires passport!'))
+    if (!_.includes(_.keys(this.app.packs), 'proxy-passport')) {
+      return Promise.reject(new Error('This Trailpack requires proxy-passport!'))
     }
-    if (!this.app.config.passport) {
-      return Promise.reject(new Error('No configuration found at config.passport!'))
+    if (!this.app.config.proxyPassport) {
+      return Promise.reject(new Error('No configuration found at config.proxyPassport!'))
     }
     if (
       this.app.config.policies
