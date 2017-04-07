@@ -222,6 +222,18 @@ const App = {
           relation: 'owner',
           resourceName: 'item',
           action: 'destroy'
+        }, {
+          roleName: 'admin',
+          resourceName: 'user',
+          action: 'create'
+        }, {
+          roleName: 'admin',
+          resourceName: 'user',
+          action: 'update'
+        }, {
+          roleName: 'admin',
+          resourceName: 'user',
+          action: 'destroy'
         }]
       }
     },

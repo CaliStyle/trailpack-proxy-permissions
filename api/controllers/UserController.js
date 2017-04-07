@@ -1,14 +1,38 @@
+/* eslint no-console: [0] */
 'use strict'
 
 const Controller = require('trails/controller')
-
+const _ = require('lodash')
 /**
  * @module UserController
  * @description Generated Trails.js Controller.
  */
 module.exports = class UserController extends Controller {
-  update(req, res) {
 
+  update(req, res) {
+    // const UserService = this.app.services.UserService
+    let id = req.params.id
+    if (!id && req.user) {
+      id = req.user.id
+    }
+    // console.log('this user',id, req.user)
+    this.app.orm['User'].findById(id)
+      .then(user => {
+
+        if (!user) {
+          const err = new Error(`User ${id} not found`)
+          err.code = 404
+          throw err
+        }
+        user = _.extend(user, req.body)
+        return user.save()
+      })
+      .then(user => {
+        return res.json(user)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
   }
   /**
    * upload CSV

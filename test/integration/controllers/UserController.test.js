@@ -4,7 +4,7 @@ const assert = require('assert')
 const supertest = require('supertest')
 
 describe('UserController', () => {
-  let request, agent, uploadID
+  let request, agent, uploadID, userID
 
   before((done) => {
     request = supertest('http://localhost:3000')
@@ -16,6 +16,8 @@ describe('UserController', () => {
       .send({username: 'admin', password: 'admin1234'})
       .expect(200)
       .end((err, res) => {
+        userID = res.body.user.id
+        console.log(res.body)
         done()
       })
   })
@@ -24,6 +26,20 @@ describe('UserController', () => {
     assert(global.app.api.controllers['UserController'])
   })
 
+  it('It should update the user\'s name', (done) => {
+    agent
+      .post('/api/user')
+      .set('Accept', 'application/json') //set header for this test
+      .send({
+        email: 'scott@scott.com'
+      })
+      .expect(200)
+      .end((err, res) => {
+        // console.log('THIS USER',res.body)
+        assert.equal(res.body.email, 'scott@scott.com')
+        done()
+      })
+  })
   it('It should upload collection_upload.csv', (done) => {
     agent
       .post('/api/user/uploadCSV')

@@ -80,7 +80,7 @@ describe('CheckPermission', () => {
         .set('Accept', 'application/json') //set header for this test
         .expect(200)
         .end((err, res) => {
-          assert.equal(res.body.length, 18)
+          assert.equal(res.body.length, 21)
           done(err)
         })
     })

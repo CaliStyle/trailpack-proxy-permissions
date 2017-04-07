@@ -20,8 +20,6 @@ module.exports = class User extends Model {
   }
 
   static schema(app, Sequelize) {
-    return {
 
-    }
   }
 }
