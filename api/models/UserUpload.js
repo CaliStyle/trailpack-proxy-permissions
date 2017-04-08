@@ -75,7 +75,7 @@ module.exports = class UserUpload extends Model {
         type: Sequelize.STRING
       },
       // 'Roles'
-      roles: helpers.ARRAY('userupload', app, Sequelize, Sequelize.STRING, 'roles', {
+      roles: helpers.ARRAY('UserUpload', app, Sequelize, Sequelize.STRING, 'roles', {
         defaultValue: []
       })
     }
