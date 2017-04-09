@@ -13,7 +13,7 @@ module.exports = class Role extends Model {
               as: 'permissions',
               onDelete: 'CASCADE',
               foreignKey: {
-                name: 'roleName',
+                name: 'role_name',
                 allowNull: false
               }
             })
@@ -34,7 +34,7 @@ module.exports = class Role extends Model {
         primaryKey: true,
         allowNull: false
       },
-      publicName: {
+      public_name: {
         type: Sequelize.STRING,
         allowNull: false
       },

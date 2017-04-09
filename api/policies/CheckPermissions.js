@@ -112,7 +112,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
     if (!permissionsConfig) return next()
 
     if (user) {
-      this.app.services.PermissionService.isUserAllowed(user, permissionsConfig.resourceName, 'access').then(permission => {
+      this.app.services.PermissionService.isUserAllowed(user, permissionsConfig.resource_name, 'access').then(permission => {
         if (!permission || permission.length === 0) {
           res.forbidden(`You don't have permissions to access ${req.originalUrl}`)
         }
@@ -122,7 +122,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
       }).catch(next)
     }
     else if (defaultRole) {
-      this.app.services.PermissionService.isAllowed(defaultRole, permissionsConfig.resourceName, 'access').then(permission => {
+      this.app.services.PermissionService.isAllowed(defaultRole, permissionsConfig.resource_name, 'access').then(permission => {
         if (!permission || permission.length === 0) {
           res.forbidden(`You don't have permissions to access ${req.originalUrl}`)
         }

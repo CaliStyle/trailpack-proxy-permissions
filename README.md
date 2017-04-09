@@ -7,7 +7,7 @@
 
 ## Permissions built for speed, security, scalability, and love from [Cali Style Technologies](https://cali-style.com)
 
-The Proxy Permissions is built to be used on Trailsjs with Proxy Engine.
+The Proxy Permissions is built to be used on Trails.js with Proxy Engine.
 It's purpose is to allow for complex ERP style permissions down to the model level as well as restrict routes based on permissions.
 
 ## Dependencies

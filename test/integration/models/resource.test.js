@@ -12,15 +12,15 @@ describe('Resource', () => {
     return global.app.orm.Resource.bulkCreate([{
       type: 'model',
       name: 'res1',
-      publicName: 'Res1'
+      public_name: 'Res1'
     }, {
       type: 'route',
       name: 'res2',
-      publicName: 'Res2'
+      public_name: 'Res2'
     }, {
       type: 'controller',
       name: 'res3',
-      publicName: 'Res3'
+      public_name: 'Res3'
     }]).then(resources => {
       assert.equal(resources.length, 3)
       assert.equal(resources[0].name, 'res1')

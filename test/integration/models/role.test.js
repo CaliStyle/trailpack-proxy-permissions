@@ -12,7 +12,7 @@ describe('Role', () => {
   it('should add Roles', () => {
     return global.app.orm.Role.bulkCreate([{
       name: 'user',
-      publicName: 'User'
+      public_name: 'User'
     }]).then(roles => {
       assert.equal(roles.length, 1)
       assert.equal(roles[0].name, 'user')

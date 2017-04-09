@@ -12,10 +12,10 @@ module.exports = {
     roles: [
       {
         name: 'admin',
-        publicName: 'Admin'
+        public_name: 'Admin'
       }, {
         name: 'registered' ,
-        publicName: 'Registered'
+        public_name: 'Registered'
       }
     ],
     resources: [],

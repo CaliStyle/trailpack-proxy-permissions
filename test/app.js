@@ -7,6 +7,40 @@ const ModelPermissions = require('../api/models/User')
 const Model = require('trails/model')
 const Controller = require('trails/controller')
 
+const DIALECT = process.env.DIALECT || 'sqlite'
+
+const stores = {
+  sqlitedev: {
+    database: 'ProxyPermissions',
+    storage: './test/test.sqlite',
+    host: '127.0.0.1',
+    dialect: 'sqlite'
+  },
+  uploads: {
+    database: 'ProxyPermissions',
+    storage: './test/test.uploads.sqlite',
+    host: '127.0.0.1',
+    dialect: 'sqlite'
+  }
+}
+
+if (DIALECT == 'postgres') {
+  stores.sqlitedev = {
+    database: 'ProxyPermissions',
+    host: '127.0.0.1',
+    dialect: 'postgres',
+    username: 'scott'
+  }
+}
+else {
+  stores.sqlitedev = {
+    database: 'ProxyPermissions',
+    storage: './test/test.sqlite',
+    host: '127.0.0.1',
+    dialect: 'sqlite'
+  }
+}
+
 const App = {
   pkg: {
     name: 'trailpack-proxy-permissions-test',
@@ -70,21 +104,7 @@ const App = {
   },
   config: {
     database: {
-      stores: {
-        sqlitedev: {
-          database: 'ProxyPermissions',
-          storage: './test/test.sqlite',
-          host: '127.0.0.1',
-          dialect: 'sqlite'
-        },
-        uploads: {
-          database: 'ProxyPermissions',
-          storage: './test/test.uploads.sqlite',
-          host: '127.0.0.1',
-          dialect: 'sqlite'
-        }
-      },
-
+      stores: stores,
       models: {
         defaultStore: 'sqlitedev',
         migrate: 'drop'
@@ -114,7 +134,7 @@ const App = {
         config: {
           app: {
             proxyPermissions: {
-              resourceName: 'successRoute',
+              resource_name: 'successRoute',
               roles: ['public']
             }
           }
@@ -127,7 +147,7 @@ const App = {
         config: {
           app: {
             proxyPermissions: {
-              resourceName: 'failureRoute',
+              resource_name: 'failureRoute',
               roles: ['test']
             }
           }
@@ -140,7 +160,7 @@ const App = {
         config: {
           app: {
             proxyPermissions: {
-              resourceName: 'successLoggedRoute',
+              resource_name: 'successLoggedRoute',
               roles: ['test']
             }
           }
@@ -153,7 +173,7 @@ const App = {
         config: {
           app: {
             proxyPermissions: {
-              resourceName: 'failureLoggedRoute',
+              resource_name: 'failureLoggedRoute',
               roles: ['admin']
             }
           }
@@ -166,73 +186,73 @@ const App = {
       fixtures: {
         roles: [{
           name: 'test',
-          publicName: 'test'
+          public_name: 'test'
         }, {
           name: 'admin',
-          publicName: 'Admin'
+          public_name: 'Admin'
         },{
           name: 'public' ,
-          publicName: 'Public'
+          public_name: 'Public'
         }],
         resources: [{
           type: 'route',
           name: 'fixture',
-          publicName: 'fixture'
+          public_name: 'fixture'
         }],
         permissions: [{
-          roleName: 'test',
-          resourceName: 'fixture',
+          role_name: 'test',
+          resource_name: 'fixture',
           action: 'action'
         }, {
-          roleName: 'test',
+          role_name: 'test',
           relation: 'owner',
-          resourceName: 'item',
+          resource_name: 'item',
           action: 'access'
         }, {
-          roleName: 'test',
+          role_name: 'test',
           relation: 'owner',
-          resourceName: 'item',
+          resource_name: 'item',
           action: 'create'
         }, {
-          roleName: 'test',
+          role_name: 'test',
           relation: 'owner',
-          resourceName: 'item',
+          resource_name: 'item',
           action: 'update'
         }, {
-          roleName: 'test',
+          role_name: 'test',
           relation: 'owner',
-          resourceName: 'item',
+          resource_name: 'item',
           action: 'destroy'
         }, {
-          roleName: 'admin',
-          resourceName: 'item',
+          role_name: 'admin',
+          resource_name: 'item',
           action: 'access'
         }, {
-          roleName: 'admin',
+          role_name: 'admin',
           relation: 'owner',
-          resourceName: 'item',
+          resource_name: 'item',
           action: 'create'
         }, {
-          roleName: 'admin',
+          role_name: 'admin',
           relation: 'owner',
-          resourceName: 'item',
+          resource_name: 'item',
           action: 'update'
         }, {
-          roleName: 'admin',
+          role_name: 'admin',
           relation: 'owner',
-          resourceName: 'item',
+          resource_name: 'item',
           action: 'destroy'
         }, {
-          roleName: 'admin',
-          resourceName: 'user',
+          role_name: 'admin',
+          resource_name: 'user',
           action: 'create'
         }, {
-          roleName: 'admin',
-          resourceName: 'user',
+          role_name: 'admin',
+          resource_name: 'user',
           action: 'update'
         }, {
-          roleName: 'admin',
-          resourceName: 'user',
+          role_name: 'admin',
+          resource_name: 'user',
           action: 'destroy'
         }]
       }
@@ -258,6 +278,10 @@ const App = {
     },
     session: {
       secret: 'ok'
+    },
+    proxyEngine: {
+      live_mode: false,
+      worker: 'test'
     },
     web: {
       express: require('express'),

@@ -14,7 +14,7 @@ module.exports = class Permission extends Model {
               onDelete: 'CASCADE',
               foreignKey: {
                 primaryKey: true,
-                name: 'roleName',
+                name: 'role_name',
                 allowNull: false
               }
             })
@@ -23,7 +23,7 @@ module.exports = class Permission extends Model {
               onDelete: 'CASCADE',
               foreignKey: {
                 primaryKey: true,
-                name: 'resourceName',
+                name: 'resource_name',
                 allowNull: false
               }
             })
@@ -34,7 +34,6 @@ module.exports = class Permission extends Model {
   }
 
   static schema(app, Sequelize) {
-    const sEnum = Sequelize.ENUM
     return {
       action: {
         type: Sequelize.STRING,
@@ -50,7 +49,8 @@ module.exports = class Permission extends Model {
         allowNull: true
       },
       relation: {
-        type: sEnum('owner')
+        type: Sequelize.ENUM,
+        values: ['owner','owners']
       }
     }
   }

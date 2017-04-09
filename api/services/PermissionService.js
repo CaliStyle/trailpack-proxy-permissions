@@ -15,7 +15,7 @@ module.exports = class PermissionService extends Service {
 
   /**
    *
-   * @param resourceName
+   * @param resource_name
    * @returns {T|*}
    */
   findResource(resourceName) {
@@ -25,15 +25,15 @@ module.exports = class PermissionService extends Service {
   /**
    *
    * @param roleName
-   * @param resourceName
+   * @param resource_name
    * @param actionName
    * @param relation
    * @returns {permission}
    */
   grant(roleName, resourceName, actionName, relation) {
     return this.app.services.FootprintService.create('permission', {
-      roleName: roleName,
-      resourceName: resourceName,
+      role_name: roleName,
+      resource_name: resourceName,
       action: actionName,
       relation: relation || null
     }, {findOne: true})
@@ -42,14 +42,14 @@ module.exports = class PermissionService extends Service {
   /**
    *
    * @param roleName
-   * @param resourceName
+   * @param resource_name
    * @param actionName
    * @returns {*}
    */
   revoke(roleName, resourceName, actionName) {
     return this.app.services.FootprintService.destroy('permission', {
-      roleName: roleName,
-      resourceName: resourceName,
+      role_name: roleName,
+      resource_name: resourceName,
       action: actionName
     })
   }
@@ -57,14 +57,14 @@ module.exports = class PermissionService extends Service {
   /**
    *
    * @param roleName
-   * @param resourceName
+   * @param resource_name
    * @param actionName
    * @returns {T|*}
    */
   isAllowed(roleName, resourceName, actionName) {
     return this.app.services.FootprintService.find('permission', {
-      roleName: roleName,
-      resourceName: resourceName,
+      role_name: roleName,
+      resource_name: resourceName,
       action: actionName
     }, {findOne: true})
   }
@@ -72,7 +72,7 @@ module.exports = class PermissionService extends Service {
   /**
    *
    * @param user
-   * @param resourceName
+   * @param resource_name
    * @param actionName
    * @returns {Promise.<TResult>|*}
    */
