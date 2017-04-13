@@ -93,7 +93,10 @@ module.exports = class PermissionService extends Service {
    */
   isUserAllowed(user, resourceName, actionName) {
     // _.get(this.app.config, 'permissions.userRoleFieldName', 'roles')
-    return user.getRoles()
+    return this.app.services.ProxyPermissionsService.resolveUser(user)
+      .then(user => {
+        return user.getRoles()
+      })
       .then(roles => {
         const promises = []
         roles.forEach(role => {
@@ -117,8 +120,11 @@ module.exports = class PermissionService extends Service {
    * @param roleName
    */
   addRoleToUser(user, roleName) {
-    user.addRole(roleName)
-    return user.save()
+    return this.app.services.ProxyPermissionsService.resolveUser(user)
+      .then(user => {
+        user.addRole(roleName)
+        return user.save()
+      })
   }
 
   /**
@@ -127,7 +133,10 @@ module.exports = class PermissionService extends Service {
    * @param roleName
    */
   removeRoleToUser(user, roleName) {
-    user.removeRole(roleName)
-    return user.save()
+    return this.app.services.ProxyPermissionsService.resolveUser(user)
+      .then(user => {
+        user.removeRole(roleName)
+        return user.save()
+      })
   }
 }
