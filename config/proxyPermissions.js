@@ -1,8 +1,10 @@
 'use strict'
 
 module.exports = {
-  //Role name to use for anonymous users
+  // Role name to use for anonymous users
   defaultRole: null,
+  // Role to Grant on user create
+  defaultRegisteredRole: null,
   // Name of the association field for Role under User model
   userRoleFieldName: 'roles',
   // add all models as resources in database on initialization

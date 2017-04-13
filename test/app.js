@@ -195,6 +195,7 @@ const App = {
     ],
     proxyPermissions: {
       defaultRole: 'public',
+      defaultRegisteredRole: 'registered',
       modelsAsResources: true,
       fixtures: {
         roles: [{

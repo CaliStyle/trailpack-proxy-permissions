@@ -4,9 +4,22 @@ const Model = require('trails/model')
 
 module.exports = class User extends Model {
   static config(app, Sequelize) {
-    return {
+    const config = {
       options: {
         underscored: true,
+        hooks: {
+          afterCreate: [
+            (values, options, fn) => {
+              app.services.PermissionService.addRoleToUser(values, app.config.proxyPermissions.defaultRegisteredRole)
+                .then(values => {
+                  fn(null, values)
+                })
+                .catch(err => {
+                  fn(err)
+                })
+            }
+          ]
+        },
         classMethods: {
           associate: (models) => {
             models.User.belongsToMany(models.Role, {
@@ -21,6 +34,7 @@ module.exports = class User extends Model {
         }
       }
     }
+    return config
   }
 
   static schema(app, Sequelize) {

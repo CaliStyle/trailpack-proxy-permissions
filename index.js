@@ -44,6 +44,7 @@ module.exports = class ProxyPermissionsTrailpack extends Trailpack {
    */
   configure () {
     return Promise.all([
+      lib.ProxyPermissions.configure(this.app),
       lib.ProxyPermissions.addPolicies(this.app),
       lib.ProxyPermissions.addRoutes(this.app),
       lib.ProxyPermissions.copyDefaults(this.app),

@@ -51,6 +51,8 @@ Then permissions config:
 module.exports = {
   //Role name to use for anonymous users
   defaultRole: 'public',
+  //Role name to add to users on create
+  defaultRegisteredRole: 'registered',
   // Name of the association field for Role under User model
   userRoleFieldName: 'roles',
   // add all models as resources in database on initialization
@@ -115,28 +117,28 @@ Use the native sequelize model under `this.app.orm.Resources`, if you need initi
 //config/proxypermissions.js
 fixtures: {
     roles: [{
-      name: 'roleName',
-      publicName: 'Role name'
+      name: 'role_name',
+      public_name: 'Role name'
     }],
     resources: [{
       type: 'model',
       name: 'modelName',
-      publicName: 'Model name'
+      public_name: 'Model name'
     }],
     permissions: [{
-       roleName: 'roleName',
+       role_name: 'role_name',
        resourceName: 'modelName',
        action: 'create'
      }, {
-       roleName: 'roleName',
+       role_name: 'role_name',
        resourceName: 'modelName',
        action: 'update'
      }, {
-       roleName: 'roleName',
+       role_name: 'role_name',
        resourceName: 'modelName',
        action: 'destroy'
      }, {
-       roleName: 'roleName',
+       role_name: 'role_name',
        resourceName: 'modelName',
        action: 'access'
      }]
