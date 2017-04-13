@@ -15,11 +15,16 @@ module.exports = class Role extends Model {
               foreignKey: {
                 name: 'role_name',
                 allowNull: false
-              }
+              },
+              constraints: false
             })
             models.Role.belongsToMany(models.User, {
               as: 'users',
-              through: 'UserRole'
+              through: {
+                model: models.UserRole,
+                foreignKey: 'role_id'
+              },
+              constraints: false
             })
           }
         }

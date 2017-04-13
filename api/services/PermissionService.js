@@ -1,7 +1,7 @@
 'use strict'
 
 const Service = require('trails/service')
-const _ = require('lodash')
+// const _ = require('lodash')
 
 module.exports = class PermissionService extends Service {
   /**
@@ -10,7 +10,12 @@ module.exports = class PermissionService extends Service {
    * @returns {Promise.<T>|*}
    */
   findRole(roleName) {
-    return this.app.services.FootprintService.find('role', roleName)
+    return this.app.orm['Role']
+      .findOne({
+        where: {
+          name: roleName
+        }
+      })
   }
 
   /**
@@ -19,7 +24,12 @@ module.exports = class PermissionService extends Service {
    * @returns {T|*}
    */
   findResource(resourceName) {
-    return this.app.services.FootprintService.find('resource', resourceName)
+    return this.app.orm['Resource']
+      .findOne({
+        where: {
+          name: resourceName
+        }
+      })
   }
 
   /**
@@ -31,12 +41,13 @@ module.exports = class PermissionService extends Service {
    * @returns {permission}
    */
   grant(roleName, resourceName, actionName, relation) {
-    return this.app.services.FootprintService.create('permission', {
-      role_name: roleName,
-      resource_name: resourceName,
-      action: actionName,
-      relation: relation || null
-    }, {findOne: true})
+    return this.app.orm['Permission']
+      .create({
+        role_name: roleName,
+        resource_name: resourceName,
+        action: actionName,
+        relation: relation || null
+      })
   }
 
   /**
@@ -47,10 +58,12 @@ module.exports = class PermissionService extends Service {
    * @returns {*}
    */
   revoke(roleName, resourceName, actionName) {
-    return this.app.services.FootprintService.destroy('permission', {
-      role_name: roleName,
-      resource_name: resourceName,
-      action: actionName
+    return this.app.orm['Permission'].destroy({
+      where: {
+        role_name: roleName,
+        resource_name: resourceName,
+        action: actionName
+      }
     })
   }
 
@@ -62,11 +75,13 @@ module.exports = class PermissionService extends Service {
    * @returns {T|*}
    */
   isAllowed(roleName, resourceName, actionName) {
-    return this.app.services.FootprintService.find('permission', {
-      role_name: roleName,
-      resource_name: resourceName,
-      action: actionName
-    }, {findOne: true})
+    return this.app.orm['Permission'].findOne({
+      where: {
+        role_name: roleName,
+        resource_name: resourceName,
+        action: actionName
+      }
+    })
   }
 
   /**
@@ -77,8 +92,8 @@ module.exports = class PermissionService extends Service {
    * @returns {Promise.<TResult>|*}
    */
   isUserAllowed(user, resourceName, actionName) {
-    return this.app.services.FootprintService.findAssociation('user', user.id,
-      _.get(this.app.config, 'permissions.userRoleFieldName', 'roles'))
+    // _.get(this.app.config, 'permissions.userRoleFieldName', 'roles')
+    return user.getRoles()
       .then(roles => {
         const promises = []
         roles.forEach(role => {

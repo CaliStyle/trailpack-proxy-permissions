@@ -12,20 +12,24 @@ module.exports = class Permission extends Model {
             models.Permission.belongsTo(models.Role, {
               as: 'role',
               onDelete: 'CASCADE',
+              // foreignKey: 'role_name',
               foreignKey: {
                 primaryKey: true,
                 name: 'role_name',
                 allowNull: false
-              }
+              },
+              constraints: false
             })
             models.Permission.belongsTo(models.Resource, {
               as: 'resource',
               onDelete: 'CASCADE',
+              // foreignKey: 'resource_name',
               foreignKey: {
                 primaryKey: true,
                 name: 'resource_name',
                 allowNull: false
-              }
+              },
+              constraints: false
             })
           }
         }

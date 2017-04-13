@@ -33,7 +33,7 @@ module.exports = class UserRole extends Model {
           type: Sequelize.INTEGER,
           unique: 'user_role'
         },
-        role_id: {
+        role_name: {
           type: Sequelize.STRING,
           unique: 'user_role'
         }

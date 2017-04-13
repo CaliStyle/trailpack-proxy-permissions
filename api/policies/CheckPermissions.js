@@ -109,17 +109,21 @@ module.exports = class CheckPermissionsPolicy extends Policy {
 
     const permissionsConfig = _.get(req.route, 'config.app.proxyPermissions')
 
-    if (!permissionsConfig) return next()
+    if (!permissionsConfig) {
+      return next()
+    }
 
     if (user) {
-      this.app.services.PermissionService.isUserAllowed(user, permissionsConfig.resource_name, 'access').then(permission => {
-        if (!permission || permission.length === 0) {
-          res.forbidden(`You don't have permissions to access ${req.originalUrl}`)
-        }
-        else {
-          return next()
-        }
-      }).catch(next)
+      this.app.services.PermissionService.isUserAllowed(user, permissionsConfig.resource_name, 'access')
+        .then(permission => {
+          if (!permission || permission.length === 0) {
+            res.forbidden(`You don't have permissions to access ${req.originalUrl}`)
+          }
+          else {
+            return next()
+          }
+        })
+        .catch(next)
     }
     else if (defaultRole) {
       this.app.services.PermissionService.isAllowed(defaultRole, permissionsConfig.resource_name, 'access').then(permission => {

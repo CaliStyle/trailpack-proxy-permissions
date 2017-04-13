@@ -5,7 +5,7 @@ const Model = require('trails/model')
 module.exports = class Resource extends Model {
   static config(app, Sequelize) {
     return {
-      //More informations about supported models options here : http://docs.sequelizejs.com/en/latest/docs/models-definition/#configuration
+      //More information about supported models options here : http://docs.sequelizejs.com/en/latest/docs/models-definition/#configuration
       options: {
         underscored: true,
         classMethods: {
@@ -16,7 +16,8 @@ module.exports = class Resource extends Model {
               foreignKey: {
                 name: 'resource_name',
                 allowNull: false
-              }
+              },
+              constraints: false
             })
           }
         }

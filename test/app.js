@@ -62,13 +62,18 @@ const App = {
         static config(app, Sequelize) {
           return {
             options: {
+              underscored: true,
               classMethods: {
                 associate: (models) => {
                   ModelPassport.config(app, Sequelize).options.classMethods.associate(models)
                   ModelPermissions.config(app, Sequelize).options.classMethods.associate(models)
                   models.User.belongsToMany(models.Item, {
                     as: 'items',
-                    through: 'UserItem'
+                    through: {
+                      model: models.UserItem,
+                      foreignKey: 'user_id'
+                    },
+                    constraints: false
                   })
                 }
               }
@@ -80,11 +85,19 @@ const App = {
         static config(app, Sequelize) {
           return {
             options: {
+              underscored: true,
               classMethods: {
                 associate: (models) => {
                   models.Item.belongsToMany(models.User, {
                     as: 'owners',
-                    through: 'UserItem'
+                    through: {
+                      model: models.UserItem,
+                      foreignKey: 'item_id',
+                      scope: {
+                        item: 'item'
+                      }
+                    },
+                    constraints: false
                   })
                 }
               }
@@ -190,6 +203,9 @@ const App = {
         }, {
           name: 'admin',
           public_name: 'Admin'
+        }, {
+          name: 'registered',
+          public_name: 'Registered'
         },{
           name: 'public' ,
           public_name: 'Public'
