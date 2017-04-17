@@ -65,4 +65,24 @@ describe('UserController', () => {
         done()
       })
   })
+  it('It should get all users', (done) => {
+    agent
+      .get('/api/user')
+      .set('Accept', 'application/json') //set header for this test
+      .expect(200)
+      .end((err, res) => {
+        // console.log('THIS USERs',res.body)
+        done()
+      })
+  })
+  it('It should get user by id', (done) => {
+    agent
+      .get(`/api/user/${ userID }`)
+      .set('Accept', 'application/json') //set header for this test
+      .expect(200)
+      .end((err, res) => {
+        // console.log('THIS USER',res.body)
+        done()
+      })
+  })
 })

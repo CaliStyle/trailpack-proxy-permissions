@@ -2,13 +2,58 @@
 'use strict'
 
 const Controller = require('trails/controller')
+// const lib = require('../../lib')
+const Errors = require('proxy-engine-errors')
 const _ = require('lodash')
 /**
  * @module UserController
  * @description Generated Trails.js Controller.
  */
 module.exports = class UserController extends Controller {
+  findById(req, res) {
+    const orm = this.app.orm
+    const User = orm['User']
+    let id = req.params.id
+    if (!id && req.user) {
+      id = req.user.id
+    }
+    User.findById(id, {})
+      .then(user => {
+        if (!user) {
+          throw new Errors.FoundError(Error(`User id ${id} not found`))
+        }
+        return res.json(user)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
+  findAll(req, res) {
+    const orm = this.app.orm
+    const User = orm['User']
+    const limit = req.query.limit || 10
+    const offset = req.query.offset || 0
+    const sort = req.query.sort || 'created_at DESC'
+    const where = this.app.services.ProxyCartService.jsonCritera(req.query.where)
 
+    User.findAndCount({
+      order: sort,
+      offset: offset,
+      limit: limit,
+      where: where
+    })
+      .then(users => {
+        res.set('X-Pagination-Total', users.count)
+        res.set('X-Pagination-Pages', Math.ceil(users.count / limit))
+        res.set('X-Pagination-Page', offset == 0 ? 1 : Math.round(offset / limit))
+        res.set('X-Pagination-Limit', limit)
+        res.set('X-Pagination-Sort', sort)
+        return res.json(users.rows)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
   update(req, res) {
     // const UserService = this.app.services.UserService
     let id = req.params.id

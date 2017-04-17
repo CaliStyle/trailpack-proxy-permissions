@@ -280,6 +280,7 @@ const App = {
     },
     policies: {
       '*': ['CheckPermissions.checkRoute'],
+      // 'UserController': ['CheckPermissions.checkRoute'],
       'FootprintController': ['CheckPermissions.checkModel']
     },
     main: {
