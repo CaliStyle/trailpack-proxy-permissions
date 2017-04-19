@@ -26,6 +26,10 @@ module.exports = class UserController extends Controller {
         {
           model: this.app.orm['Role'],
           as: 'roles'
+        },
+        {
+          model: this.app.orm['Event'],
+          as: 'events'
         }
       ]
     })
@@ -53,10 +57,6 @@ module.exports = class UserController extends Controller {
       limit: limit,
       where: where,
       include: [
-        {
-          model: this.app.orm['Passport'],
-          as: 'passports'
-        },
         {
           model: this.app.orm['Role'],
           as: 'roles'
