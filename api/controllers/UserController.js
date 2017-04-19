@@ -17,7 +17,18 @@ module.exports = class UserController extends Controller {
     if (!id && req.user) {
       id = req.user.id
     }
-    User.findById(id, {})
+    User.findById(id, {
+      include: [
+        {
+          model: this.app.orm['Passport'],
+          as: 'passports'
+        },
+        {
+          model: this.app.orm['Roles'],
+          as: 'roles'
+        }
+      ]
+    })
       .then(user => {
         if (!user) {
           throw new Errors.FoundError(Error(`User id ${id} not found`))
@@ -40,7 +51,17 @@ module.exports = class UserController extends Controller {
       order: sort,
       offset: offset,
       limit: limit,
-      where: where
+      where: where,
+      include: [
+        {
+          model: this.app.orm['Passport'],
+          as: 'passports'
+        },
+        {
+          model: this.app.orm['Roles'],
+          as: 'roles'
+        }
+      ]
     })
       .then(users => {
         res.set('X-Pagination-Total', users.count)

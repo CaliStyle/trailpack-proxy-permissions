@@ -30,6 +30,14 @@ module.exports = class User extends Model {
               },
               constraints: false
             })
+            models.User.hasMany(models.Event, {
+              as: 'events',
+              foreignKey: 'object_id',
+              scope: {
+                object: 'user'
+              },
+              constraints: false
+            })
           }
         }
       }
