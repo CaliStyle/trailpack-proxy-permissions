@@ -58,7 +58,7 @@ module.exports = class UserController extends Controller {
           as: 'passports'
         },
         {
-          model: this.app.orm['Roles'],
+          model: this.app.orm['Role'],
           as: 'roles'
         }
       ]
