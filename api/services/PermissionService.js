@@ -1,3 +1,4 @@
+/* eslint no-console: [0] */
 'use strict'
 
 const Service = require('trails/service')
@@ -120,10 +121,26 @@ module.exports = class PermissionService extends Service {
    * @param roleName
    */
   addRoleToUser(user, roleName) {
+    let resUser
     return this.app.services.ProxyPermissionsService.resolveUser(user)
       .then(user => {
-        user.addRole(roleName)
-        return user.save()
+        resUser = user
+        resUser.roles = resUser.roles || []
+        return resUser.hasRole(roleName)
+      })
+      .then(hasRole => {
+        if (!hasRole) {
+          resUser.addRole(roleName)
+          return resUser.save()
+        }
+        return resUser
+      })
+      .then(user => {
+        return resUser.getRoles()
+      })
+      .then(roles => {
+        resUser.set('roles', roles, {raw: true})
+        return resUser
       })
   }
 
@@ -132,11 +149,27 @@ module.exports = class PermissionService extends Service {
    * @param user
    * @param roleName
    */
-  removeRoleToUser(user, roleName) {
+  removeRoleFromUser(user, roleName) {
+    let resUser
     return this.app.services.ProxyPermissionsService.resolveUser(user)
       .then(user => {
-        user.removeRole(roleName)
-        return user.save()
+        resUser = user
+        resUser.roles = resUser.roles || []
+        return resUser.hasRole(roleName)
+      })
+      .then(hasRole => {
+        if (hasRole) {
+          resUser.removeRole(roleName)
+          return resUser.save()
+        }
+        return resUser
+      })
+      .then(user => {
+        return resUser.getRoles()
+      })
+      .then(roles => {
+        resUser.set('roles', roles, {raw: true})
+        return resUser
       })
   }
 }

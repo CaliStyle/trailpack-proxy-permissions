@@ -85,4 +85,24 @@ describe('UserController', () => {
         done()
       })
   })
+  it('It should add role to user by id', (done) => {
+    agent
+      .post(`/api/user/${ userID }/addRole/test`)
+      .set('Accept', 'application/json') //set header for this test
+      .expect(200)
+      .end((err, res) => {
+        console.log('THIS USER',res.body)
+        done()
+      })
+  })
+  it('It should remove role from user by id', (done) => {
+    agent
+      .post(`/api/user/${ userID }/removeRole/test`)
+      .set('Accept', 'application/json') //set header for this test
+      .expect(200)
+      .end((err, res) => {
+        console.log('THIS USER',res.body)
+        done()
+      })
+  })
 })

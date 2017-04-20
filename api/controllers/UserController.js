@@ -149,5 +149,23 @@ module.exports = class UserController extends Controller {
   exportUsers(req, res) {
     //
   }
+  addRole(req, res) {
+    this.app.services.PermissionService.addRoleToUser(req.params.id, req.params.role)
+      .then(user => {
+        return res.json(user)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
+  removeRole(req, res) {
+    this.app.services.PermissionService.removeRoleFromUser(req.params.id, req.params.role)
+      .then(user => {
+        return res.json(user)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
 }
 
