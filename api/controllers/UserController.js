@@ -67,6 +67,7 @@ module.exports = class UserController extends Controller {
         res.set('X-Pagination-Total', users.count)
         res.set('X-Pagination-Pages', Math.ceil(users.count / limit))
         res.set('X-Pagination-Page', offset == 0 ? 1 : Math.round(offset / limit))
+        res.set('X-Pagination-Offset', offset)
         res.set('X-Pagination-Limit', limit)
         res.set('X-Pagination-Sort', sort)
         return res.json(users.rows)
@@ -149,6 +150,39 @@ module.exports = class UserController extends Controller {
   exportUsers(req, res) {
     //
   }
+  roles(req, res) {
+    const Role = this.app.orm['Role']
+    const userId = req.params.id
+
+    if (!userId && !req.user) {
+      const err = new Error('A user id and a user in session are required')
+      return res.send(401, err)
+    }
+
+    const limit = req.query.limit || 10
+    const offset = req.query.offset || 0
+    const sort = req.query.sort || 'created_at DESC'
+
+    Role.findAndCount({
+      order: sort,
+      where: {
+        user_id: userId
+      },
+      offset: offset,
+      limit: limit
+    })
+      .then(roles => {
+        res.set('X-Pagination-Total', roles.count)
+        res.set('X-Pagination-Pages', Math.ceil(roles.count / limit))
+        res.set('X-Pagination-Page', offset == 0 ? 1 : Math.round(offset / limit))
+        res.set('X-Pagination-Limit', limit)
+        res.set('X-Pagination-Sort', sort)
+        return res.json(roles.rows)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
   addRole(req, res) {
     this.app.services.PermissionService.addRoleToUser(req.params.id, req.params.role)
       .then(user => {
@@ -167,5 +201,70 @@ module.exports = class UserController extends Controller {
         return res.serverError(err)
       })
   }
+
+  /**
+   *
+   * @param req
+   * @param res
+   */
+  event(req, res) {
+    const Event = this.app.orm['Event']
+    const eventId = req.params.event
+    const userId = req.params.id
+
+    if (!userId || !eventId || !req.user) {
+      const err = new Error('A user id and a user in session are required')
+      res.send(401, err)
+
+    }
+    Event.findById(eventId)
+      .then(event => {
+        return res.json(event)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
+
+  /**
+   *
+   * @param req
+   * @param res
+   */
+  events(req, res) {
+    const Event = this.app.orm['Event']
+    const userId = req.params.id
+
+    if (!userId && !req.user) {
+      const err = new Error('A user id and a user in session are required')
+      return res.send(401, err)
+    }
+
+    const limit = req.query.limit || 10
+    const offset = req.query.offset || 0
+    const sort = req.query.sort || 'created_at DESC'
+
+    Event.findAndCount({
+      order: sort,
+      where: {
+        object_id: userId,
+        object: 'user'
+      },
+      offset: offset,
+      limit: limit
+    })
+      .then(events => {
+        res.set('X-Pagination-Total', events.count)
+        res.set('X-Pagination-Pages', Math.ceil(events.count / limit))
+        res.set('X-Pagination-Page', offset == 0 ? 1 : Math.round(offset / limit))
+        res.set('X-Pagination-Limit', limit)
+        res.set('X-Pagination-Sort', sort)
+        return res.json(events.rows)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
+
 }
 
