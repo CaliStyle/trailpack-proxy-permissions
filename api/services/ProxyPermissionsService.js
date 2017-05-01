@@ -38,5 +38,20 @@ module.exports = class ProxyPermissionsService extends Service {
       return Promise.reject(err)
     }
   }
+  jsonCritera(str) {
+    if (!str) {
+      return {}
+    }
+    if (str instanceof Object) {
+      return str
+    }
+    try {
+      str = JSON.parse(str)
+    }
+    catch (err) {
+      str = {}
+    }
+    return str
+  }
 }
 

@@ -1,0 +1,97 @@
+'use strict'
+
+const Controller = require('trails/controller')
+const Errors = require('proxy-engine-errors')
+
+/**
+ * @module RoleController
+ * @description Generated Trails.js Controller.
+ */
+module.exports = class RoleController extends Controller {
+  /**
+   *
+   * @param req
+   * @param res
+   */
+  generalStats(req, res) {
+    res.json({})
+  }
+
+  /**
+   *
+   * @param req
+   * @param res
+   */
+  count(req, res){
+    const ProxyEngineService = this.app.services.ProxyEngineService
+    ProxyEngineService.count('Role')
+      .then(count => {
+        const counts = {
+          carts: count
+        }
+        return res.json(counts)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
+
+  /**
+   *
+   * @param req
+   * @param res
+   */
+  findOne(req, res) {
+    const orm = this.app.orm
+    const Role = orm['Role']
+    const role = req.params.role
+
+    Role.findOne({
+      where: {
+        name: role
+      }
+    })
+      .then(role => {
+        if (!role) {
+          throw new Errors.FoundError(Error(`Role name '${ role }' not found`))
+        }
+        return res.json(role)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
+  /**
+   *
+   * @param req
+   * @param res
+   */
+  findAll(req, res) {
+    const orm = this.app.orm
+    const Role = orm['Role']
+    const limit = req.query.limit || 10
+    const offset = req.query.offset || 0
+    const sort = req.query.sort || 'created_at DESC'
+    const where = this.app.services.ProxyPermissionsService.jsonCritera(req.query.where)
+
+    Role.findAndCount({
+      order: sort,
+      offset: offset,
+      limit: limit,
+      where: where
+    })
+      .then(roles => {
+        res.set('X-Pagination-Total', roles.count)
+        res.set('X-Pagination-Pages', Math.ceil(roles.count / limit))
+        res.set('X-Pagination-Page', offset == 0 ? 1 : Math.round(offset / limit))
+        res.set('X-Pagination-Offset', offset)
+        res.set('X-Pagination-Limit', limit)
+        res.set('X-Pagination-Sort', sort)
+        return res.json(roles.rows)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
+}
+

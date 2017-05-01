@@ -10,6 +10,27 @@ const _ = require('lodash')
  * @description Generated Trails.js Controller.
  */
 module.exports = class UserController extends Controller {
+  generalStats(req, res) {
+    res.json({})
+  }
+  /**
+   * count the amount of user
+   * @param req
+   * @param res
+   */
+  count(req, res){
+    const ProxyEngineService = this.app.services.ProxyEngineService
+    ProxyEngineService.count('User')
+      .then(count => {
+        const counts = {
+          carts: count
+        }
+        return res.json(counts)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
   findById(req, res) {
     const orm = this.app.orm
     const User = orm['User']
@@ -49,7 +70,7 @@ module.exports = class UserController extends Controller {
     const limit = req.query.limit || 10
     const offset = req.query.offset || 0
     const sort = req.query.sort || 'created_at DESC'
-    const where = this.app.services.ProxyCartService.jsonCritera(req.query.where)
+    const where = this.app.services.ProxyPermissionsService.jsonCritera(req.query.where)
 
     User.findAndCount({
       order: sort,
