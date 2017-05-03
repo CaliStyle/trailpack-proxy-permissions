@@ -91,7 +91,7 @@ describe('UserController', () => {
       .set('Accept', 'application/json') //set header for this test
       .expect(200)
       .end((err, res) => {
-        console.log('THIS USER',res.body)
+        // console.log('THIS USER',res.body)
         done()
       })
   })
@@ -101,7 +101,18 @@ describe('UserController', () => {
       .set('Accept', 'application/json') //set header for this test
       .expect(200)
       .end((err, res) => {
-        console.log('THIS USER',res.body)
+        // console.log('THIS USER',res.body)
+        done()
+      })
+  })
+  it('It should get roles by user id', (done) => {
+    agent
+      .get(`/api/user/${ userID }/roles`)
+      .set('Accept', 'application/json') //set header for this test
+      .expect(200)
+      .end((err, res) => {
+        console.log('THIS USER', res.body)
+        // assert.equal(res.body.length, 1)
         done()
       })
   })

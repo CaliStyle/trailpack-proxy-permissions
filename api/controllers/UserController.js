@@ -97,6 +97,64 @@ module.exports = class UserController extends Controller {
         return res.serverError(err)
       })
   }
+
+  search(req, res) {
+    const orm = this.app.orm
+    const User = orm['User']
+    const limit = req.query.limit || 10
+    const offset = req.query.offset || 0
+    const sort = req.query.sort || 'created_at DESC'
+    const term = req.query.term
+
+    User.findAndCount({
+      order: sort,
+      offset: offset,
+      limit: limit,
+      where: {
+        $or: [
+          {
+            email: {
+              $like: `%${term}%`
+            }
+          },
+          {
+            username: {
+              $like: `%${term}%`
+            }
+          },
+          {
+            first_name: {
+              $like: `%${term}%`
+            }
+          },
+          {
+            last_name: {
+              $like: `%${term}%`
+            }
+          }
+        ]
+      },
+      include: [
+        {
+          model: this.app.orm['Role'],
+          as: 'roles'
+        }
+      ]
+    })
+      .then(users => {
+        res.set('X-Pagination-Total', users.count)
+        res.set('X-Pagination-Pages', Math.ceil(users.count / limit))
+        res.set('X-Pagination-Page', offset == 0 ? 1 : Math.round(offset / limit))
+        res.set('X-Pagination-Offset', offset)
+        res.set('X-Pagination-Limit', limit)
+        res.set('X-Pagination-Sort', sort)
+        return res.json(users.rows)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
+
   update(req, res) {
     // const UserService = this.app.services.UserService
     let id = req.params.id
@@ -186,9 +244,13 @@ module.exports = class UserController extends Controller {
 
     Role.findAndCount({
       order: sort,
-      where: {
-        user_id: userId
-      },
+      include: [{
+        model: this.app.orm['User'],
+        as: 'user',
+        where: {
+          id: userId
+        }
+      }],
       offset: offset,
       limit: limit
     })
