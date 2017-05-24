@@ -85,12 +85,7 @@ module.exports = class UserController extends Controller {
       ]
     })
       .then(users => {
-        res.set('X-Pagination-Total', users.count)
-        res.set('X-Pagination-Pages', Math.ceil(users.count / limit))
-        res.set('X-Pagination-Page', offset == 0 ? 1 : Math.round(offset / limit))
-        res.set('X-Pagination-Offset', offset)
-        res.set('X-Pagination-Limit', limit)
-        res.set('X-Pagination-Sort', sort)
+        this.app.services.ProxyEngineService.paginate(res, users.count, limit, offset, sort)
         return res.json(users.rows)
       })
       .catch(err => {
@@ -142,12 +137,7 @@ module.exports = class UserController extends Controller {
       ]
     })
       .then(users => {
-        res.set('X-Pagination-Total', users.count)
-        res.set('X-Pagination-Pages', Math.ceil(users.count / limit))
-        res.set('X-Pagination-Page', offset == 0 ? 1 : Math.round(offset / limit))
-        res.set('X-Pagination-Offset', offset)
-        res.set('X-Pagination-Limit', limit)
-        res.set('X-Pagination-Sort', sort)
+        this.app.services.ProxyEngineService.paginate(res, users.count, limit, offset, sort)
         return res.json(users.rows)
       })
       .catch(err => {
@@ -255,11 +245,7 @@ module.exports = class UserController extends Controller {
       limit: limit
     })
       .then(roles => {
-        res.set('X-Pagination-Total', roles.count)
-        res.set('X-Pagination-Pages', Math.ceil(roles.count / limit))
-        res.set('X-Pagination-Page', offset == 0 ? 1 : Math.round(offset / limit))
-        res.set('X-Pagination-Limit', limit)
-        res.set('X-Pagination-Sort', sort)
+        this.app.services.ProxyEngineService.paginate(res, roles.count, limit, offset, sort)
         return res.json(roles.rows)
       })
       .catch(err => {
@@ -337,11 +323,7 @@ module.exports = class UserController extends Controller {
       limit: limit
     })
       .then(events => {
-        res.set('X-Pagination-Total', events.count)
-        res.set('X-Pagination-Pages', Math.ceil(events.count / limit))
-        res.set('X-Pagination-Page', offset == 0 ? 1 : Math.round(offset / limit))
-        res.set('X-Pagination-Limit', limit)
-        res.set('X-Pagination-Sort', sort)
+        this.app.services.ProxyEngineService.paginate(res, events.count, limit, offset, sort)
         return res.json(events.rows)
       })
       .catch(err => {

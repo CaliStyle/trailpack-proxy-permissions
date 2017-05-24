@@ -81,12 +81,7 @@ module.exports = class RoleController extends Controller {
       where: where
     })
       .then(roles => {
-        res.set('X-Pagination-Total', roles.count)
-        res.set('X-Pagination-Pages', Math.ceil(roles.count / limit))
-        res.set('X-Pagination-Page', offset == 0 ? 1 : Math.round(offset / limit))
-        res.set('X-Pagination-Offset', offset)
-        res.set('X-Pagination-Limit', limit)
-        res.set('X-Pagination-Sort', sort)
+        this.app.services.ProxyEngineService.paginate(res, roles.count, limit, offset, sort)
         return res.json(roles.rows)
       })
       .catch(err => {
