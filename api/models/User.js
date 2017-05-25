@@ -1,6 +1,8 @@
 'use strict'
 
 const Model = require('trails/model')
+const _ = require('lodash')
+const queryDefaults = require('../utils/queryDefaults')
 
 module.exports = class User extends Model {
   static config(app, Sequelize) {
@@ -38,6 +40,13 @@ module.exports = class User extends Model {
               },
               constraints: false
             })
+          },
+          findByIdDefault: function(criteria, options) {
+            if (!options) {
+              options = {}
+            }
+            options = _.merge(options, queryDefaults.User.default(app))
+            return this.findById(criteria, options)
           }
         }
       }

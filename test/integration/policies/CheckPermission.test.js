@@ -49,7 +49,7 @@ describe('CheckPermission', () => {
   describe('CheckModelPermissions', () => {
 
     it('should check Model permissions on footprints', () => {
-      return global.app.services.PermissionService.grant('test', 'role', 'access')
+      return global.app.services.PermissionService.grant('test', 'apiGetRoleRoute', 'access')
         .then(perms => {
           return new Promise((resolve, reject) => {
             agent.get('/api/role')
@@ -80,7 +80,8 @@ describe('CheckPermission', () => {
         .set('Accept', 'application/json') //set header for this test
         .expect(200)
         .end((err, res) => {
-          assert.equal(res.body.length, 38)
+          // console.log('broke',res.body)
+          assert.equal(res.body.length, 44)
           done(err)
         })
     })

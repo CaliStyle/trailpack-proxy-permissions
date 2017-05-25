@@ -15,7 +15,7 @@ module.exports = class ProxyPermissionsService extends Service {
       return Promise.resolve(user)
     }
     else if (user && _.isObject(user) && user.id) {
-      return User.findById(user.id, options)
+      return User.findByIdDefault(user.id, options)
         .then(resUser => {
           if (!resUser) {
             throw new Errors.FoundError(Error(`User ${user.id} not found`))
@@ -24,7 +24,7 @@ module.exports = class ProxyPermissionsService extends Service {
         })
     }
     else if (user && (_.isString(user) || _.isNumber(user))) {
-      return User.findById(user, options)
+      return User.findByIdDefault(user, options)
         .then(resUser => {
           if (!resUser) {
             throw new Errors.FoundError(Error(`User ${user} not found`))

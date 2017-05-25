@@ -86,6 +86,18 @@ module.exports = class UserCsvService extends Service {
     }
 
     _.each(row, (data, key) => {
+      if (data === '') {
+        row[key] = null
+      }
+    })
+
+    row = _.omitBy(row, _.isNil)
+
+    if (_.isEmpty(row)) {
+      return Promise.resolve({})
+    }
+
+    _.each(row, (data, key) => {
       if (data !== '') {
         const i = values.indexOf(key.replace(/^\s+|\s+$/g, ''))
         const k = keys[i]
@@ -119,7 +131,10 @@ module.exports = class UserCsvService extends Service {
           upload_id: uploadId
         }
       }, users => {
-        return Promise.all(users.map(user => {
+        const Sequelize = this.app.orm.User.sequelize
+
+        return Sequelize.Promise.mapSeries(users, user => {
+
           const create = {
             username: user.username,
             email: user.email,
@@ -129,10 +144,11 @@ module.exports = class UserCsvService extends Service {
           }
           return this.app.orm['User'].create(create)
           // return this.app.services.UserService.create(create)
-        }))
+        })
           .then(results => {
             // Calculate Totals
             usersTotal = usersTotal + results.length
+            return results
           })
       })
         .then(results => {

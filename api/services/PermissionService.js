@@ -88,7 +88,7 @@ module.exports = class PermissionService extends Service {
   /**
    *
    * @param user
-   * @param resource_name
+   * @param resourceName
    * @param actionName
    * @returns {Promise.<TResult>|*}
    */
@@ -104,6 +104,7 @@ module.exports = class PermissionService extends Service {
           promises.push(this.isAllowed(role.name, resourceName, actionName))
         })
         return Promise.all(promises).then(permissions => {
+          // console.log('This permissions',permissions)
           const perms = []
           permissions.forEach(perm => {
             if (perm != null) {
@@ -120,27 +121,25 @@ module.exports = class PermissionService extends Service {
    * @param user
    * @param roleName
    */
-  addRoleToUser(user, roleName) {
+  addRoleToUser(user, roleName, options) {
+    if (!options) {
+      options = {}
+    }
     let resUser
-    return this.app.services.ProxyPermissionsService.resolveUser(user)
+    return this.app.services.ProxyPermissionsService.resolveUser(user, options)
       .then(user => {
         resUser = user
-        resUser.roles = resUser.roles || []
-        return resUser.hasRole(roleName)
+        return resUser.hasRole(roleName, {transaction: options.transaction || null})
       })
       .then(hasRole => {
         if (!hasRole) {
-          resUser.addRole(roleName)
-          return resUser.save()
+          console.log('NO ROLE')
+          return resUser.addRole(roleName, {transaction: options.transaction || null})
         }
         return resUser
       })
-      .then(user => {
-        return resUser.getRoles()
-      })
-      .then(roles => {
-        resUser.set('roles', roles, {raw: true})
-        return resUser
+      .then(() => {
+        return resUser.reload({transaction: options.transaction || null})
       })
   }
 
@@ -149,27 +148,24 @@ module.exports = class PermissionService extends Service {
    * @param user
    * @param roleName
    */
-  removeRoleFromUser(user, roleName) {
+  removeRoleFromUser(user, roleName, options) {
+    if (!options) {
+      options = {}
+    }
     let resUser
-    return this.app.services.ProxyPermissionsService.resolveUser(user)
+    return this.app.services.ProxyPermissionsService.resolveUser(user, options)
       .then(user => {
         resUser = user
-        resUser.roles = resUser.roles || []
-        return resUser.hasRole(roleName)
+        return resUser.hasRole(roleName, {transaction: options.transaction || null})
       })
       .then(hasRole => {
         if (hasRole) {
-          resUser.removeRole(roleName)
-          return resUser.save()
+          return resUser.removeRole(roleName, {transaction: options.transaction || null})
         }
         return resUser
       })
-      .then(user => {
-        return resUser.getRoles()
-      })
-      .then(roles => {
-        resUser.set('roles', roles, {raw: true})
-        return resUser
+      .then(() => {
+        return resUser.reload({transaction: options.transaction || null})
       })
   }
 }

@@ -116,17 +116,17 @@ module.exports = class UserController extends Controller {
             username: {
               $like: `%${term}%`
             }
-          },
-          {
-            first_name: {
-              $like: `%${term}%`
-            }
-          },
-          {
-            last_name: {
-              $like: `%${term}%`
-            }
           }
+          // {
+          //   first_name: {
+          //     $like: `%${term}%`
+          //   }
+          // },
+          // {
+          //   last_name: {
+          //     $like: `%${term}%`
+          //   }
+          // }
         ]
       },
       include: [
@@ -219,8 +219,9 @@ module.exports = class UserController extends Controller {
   exportUsers(req, res) {
     //
   }
+
   roles(req, res) {
-    const Role = this.app.orm['Role']
+    // const Role = this.app.orm['Role']
     const userId = req.params.id
 
     if (!userId && !req.user) {
@@ -228,30 +229,27 @@ module.exports = class UserController extends Controller {
       return res.send(401, err)
     }
 
-    const limit = req.query.limit || 10
-    const offset = req.query.offset || 0
-    const sort = req.query.sort || 'created_at DESC'
+    // const limit = req.query.limit || 10
+    // const offset = req.query.offset || 0
+    // const sort = req.query.sort || 'created_at DESC'
 
-    Role.findAndCount({
-      order: sort,
-      include: [{
-        model: this.app.orm['User'],
-        as: 'user',
-        where: {
-          id: userId
-        }
-      }],
-      offset: offset,
-      limit: limit
-    })
+    this.app.services.ProxyPermissionsService.resolveUser(userId)
+      .then(user => {
+        return user.getRoles()
+      })
       .then(roles => {
-        this.app.services.ProxyEngineService.paginate(res, roles.count, limit, offset, sort)
-        return res.json(roles.rows)
+        return res.json(roles)
       })
       .catch(err => {
         return res.serverError(err)
       })
   }
+
+  /**
+   *
+   * @param req
+   * @param res
+   */
   addRole(req, res) {
     this.app.services.PermissionService.addRoleToUser(req.params.id, req.params.role)
       .then(user => {
@@ -261,6 +259,12 @@ module.exports = class UserController extends Controller {
         return res.serverError(err)
       })
   }
+
+  /**
+   *
+   * @param req
+   * @param res
+   */
   removeRole(req, res) {
     this.app.services.PermissionService.removeRoleFromUser(req.params.id, req.params.role)
       .then(user => {

@@ -75,7 +75,8 @@ const App = {
                     },
                     constraints: false
                   })
-                }
+                },
+                findByIdDefault: ModelPermissions.config(app, Sequelize).options.classMethods.findByIdDefault
               }
             }
           }

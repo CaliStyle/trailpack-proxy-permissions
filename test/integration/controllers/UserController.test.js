@@ -53,14 +53,14 @@ describe('UserController', () => {
         done()
       })
   })
-  it.skip('It should process upload', (done) => {
+  it('It should process upload', (done) => {
     // console.log('UPLOAD ID', uploadID)
     agent
       .post(`/api/user/processUpload/${ uploadID }`)
       .send({})
       .expect(200)
       .end((err, res) => {
-        console.log('process upload body', res.body)
+        // console.log('process upload body', res.body)
         assert.equal(res.body.users, 1)
         done()
       })
@@ -72,6 +72,9 @@ describe('UserController', () => {
       .expect(200)
       .end((err, res) => {
         // console.log('THIS USERs',res.body)
+        assert.equal(res.body.length, 2)
+        assert.equal(res.body[0].username, 'test')
+        assert.equal(res.body[1].username, 'admin')
         done()
       })
   })
@@ -82,6 +85,9 @@ describe('UserController', () => {
       .expect(200)
       .end((err, res) => {
         // console.log('THIS USER',res.body)
+        assert.equal(res.body.id, userID)
+        assert.equal(res.body.username, 'admin')
+        assert.equal(res.body.email, 'scott@scott.com')
         done()
       })
   })
@@ -92,6 +98,10 @@ describe('UserController', () => {
       .expect(200)
       .end((err, res) => {
         // console.log('THIS USER',res.body)
+        assert.equal(res.body.id, userID)
+        assert.equal(res.body.roles.length, 2)
+        assert.equal(res.body.roles[0].name, 'admin')
+        assert.equal(res.body.roles[1].name, 'test')
         done()
       })
   })
@@ -102,6 +112,9 @@ describe('UserController', () => {
       .expect(200)
       .end((err, res) => {
         // console.log('THIS USER',res.body)
+        assert.equal(res.body.id, userID)
+        assert.equal(res.body.roles.length, 1)
+        assert.equal(res.body.roles[0].name, 'admin')
         done()
       })
   })
@@ -111,8 +124,21 @@ describe('UserController', () => {
       .set('Accept', 'application/json') //set header for this test
       .expect(200)
       .end((err, res) => {
-        console.log('THIS USER', res.body)
-        // assert.equal(res.body.length, 1)
+        // console.log('THIS USER', res.body)
+        assert.equal(res.body.length, 1)
+        assert.equal(res.body[0].name, 'admin')
+        done()
+      })
+  })
+  it('It search a user', (done) => {
+    agent
+      .get('/api/user/search')
+      .query({term: 'scott'})
+      .set('Accept', 'application/json') //set header for this test
+      .expect(200)
+      .end((err, res) => {
+        // console.log('THIS USER', res.body)
+        assert.equal(res.body.length, 1)
         done()
       })
   })
