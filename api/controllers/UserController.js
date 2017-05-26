@@ -334,6 +334,5 @@ module.exports = class UserController extends Controller {
         return res.serverError(err)
       })
   }
-
 }
 

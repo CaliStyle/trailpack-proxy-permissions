@@ -195,6 +195,7 @@ const App = {
       }
     ],
     proxyPermissions: {
+      prefix: '/api',
       defaultRole: 'public',
       defaultRegisteredRole: 'registered',
       modelsAsResources: true,
@@ -276,7 +277,9 @@ const App = {
       }
     },
     footprints: {
-      controllers: false,
+      controllers: {
+        ignore: ['UserController','RoleController','AuthController','EventController']
+      },
       prefix: '/api'
     },
     policies: {

@@ -1,3 +1,4 @@
+/* eslint no-console: [0] */
 'use strict'
 
 const Trailpack = require('trailpack')
@@ -25,6 +26,9 @@ module.exports = class ProxyPermissionsTrailpack extends Trailpack {
     }
     if (!this.app.config.proxyPassport) {
       return Promise.reject(new Error('No configuration found at config.proxyPassport!'))
+    }
+    if (this.app.config.get('footprints')) {
+      // console.log(this.app)
     }
     if (
       this.app.config.policies

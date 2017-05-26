@@ -13,7 +13,7 @@ module.exports = class CheckPermissionsPolicy extends Policy {
     const modelName = req.params.model
     const user = req.user
     const defaultRole = this.app.config.proxyPermissions.defaultRole
-    console.log('modelName', modelName)
+    // console.log('modelName', modelName)
     let action = 'access'
     if (req.method === 'POST') {
       action = 'create'
