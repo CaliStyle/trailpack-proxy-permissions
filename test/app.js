@@ -76,7 +76,8 @@ const App = {
                     constraints: false
                   })
                 },
-                findByIdDefault: ModelPermissions.config(app, Sequelize).options.classMethods.findByIdDefault
+                findByIdDefault: ModelPermissions.config(app, Sequelize).options.classMethods.findByIdDefault,
+                findOneDefault: ModelPermissions.config(app, Sequelize).options.classMethods.findOneDefault
               }
             }
           }
