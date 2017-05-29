@@ -5,6 +5,10 @@ module.exports = {
         {
           model: app.orm['Role'],
           as: 'roles'
+        },
+        {
+          model: app.orm['Passport'],
+          as: 'passports'
         }
       ]
     }

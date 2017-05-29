@@ -12,7 +12,7 @@ module.exports = class User extends Model {
         hooks: {
           afterCreate: [
             (values, options, fn) => {
-              app.services.PermissionService.addRoleToUser(values, app.config.proxyPermissions.defaultRegisteredRole)
+              app.services.PermissionService.addRoleToUser(values, app.config.proxyPermissions.defaultRegisteredRole, options)
                 .then(values => {
                   fn(null, values)
                 })

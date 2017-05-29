@@ -40,7 +40,7 @@ describe('UserController', () => {
         done()
       })
   })
-  it('It should upload collection_upload.csv', (done) => {
+  it('It should upload user_upload.csv', (done) => {
     agent
       .post('/api/user/uploadCSV')
       .attach('csv', 'test/fixtures/user_upload.csv')
@@ -99,6 +99,7 @@ describe('UserController', () => {
       .end((err, res) => {
         // console.log('THIS USER',res.body)
         assert.equal(res.body.id, userID)
+        assert.equal(res.body.passports.length, 1)
         assert.equal(res.body.roles.length, 2)
         assert.equal(res.body.roles[0].name, 'admin')
         assert.equal(res.body.roles[1].name, 'test')
@@ -113,6 +114,7 @@ describe('UserController', () => {
       .end((err, res) => {
         // console.log('THIS USER',res.body)
         assert.equal(res.body.id, userID)
+        assert.equal(res.body.passports.length, 1)
         assert.equal(res.body.roles.length, 1)
         assert.equal(res.body.roles[0].name, 'admin')
         done()
@@ -124,7 +126,7 @@ describe('UserController', () => {
       .set('Accept', 'application/json') //set header for this test
       .expect(200)
       .end((err, res) => {
-        console.log('THIS USER', res.body)
+        // console.log('THIS USER', res.body)
         assert.equal(res.body.length, 1)
         assert.equal(res.body[0].name, 'admin')
         done()
