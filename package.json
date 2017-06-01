@@ -34,7 +34,7 @@
     "proxy-engine-helpers": "^1.0.4",
     "shortid": "^2.2.8",
     "trailpack": "^2.0.0",
-    "trailpack-proxy-passport": "^1.0.3"
+    "trailpack-proxy-passport": "^1.0.4"
   },
   "devDependencies": {
     "eslint": "^3.3.1",
