@@ -1,6 +1,6 @@
 {
   "name": "trailpack-proxy-permissions",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Permissions - Trailpack for Proxy Engine",
   "homepage": "https://cali-style.com",
   "author": {
@@ -61,7 +61,7 @@
     "push": "git push --tags && git push"
   },
   "engines": {
-    "node": ">= 4.0.0"
+    "node": ">= 6.0.0"
   },
   "eslintConfig": {
     "extends": "trails"

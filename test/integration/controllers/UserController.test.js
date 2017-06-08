@@ -43,7 +43,7 @@ describe('UserController', () => {
   it('It should upload user_upload.csv', (done) => {
     agent
       .post('/api/user/uploadCSV')
-      .attach('csv', 'test/fixtures/user_upload.csv')
+      .attach('file', 'test/fixtures/user_upload.csv')
       .expect(200)
       .end((err, res) => {
         // console.log('upload body',res.body)
