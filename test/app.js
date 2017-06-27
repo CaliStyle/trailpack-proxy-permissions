@@ -28,8 +28,7 @@ if (DIALECT == 'postgres') {
   stores.sqlitedev = {
     database: 'ProxyPermissions',
     host: '127.0.0.1',
-    dialect: 'postgres',
-    username: 'scott'
+    dialect: 'postgres'
   }
 }
 else {
