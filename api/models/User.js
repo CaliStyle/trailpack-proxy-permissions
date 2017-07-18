@@ -55,6 +55,24 @@ module.exports = class User extends Model {
             options = _.merge(options, queryDefaults.User.default(app))
             return this.findOne(options)
           }
+        },
+        instanceMethods: {
+          resolveRoles: function(options) {
+            options = options || {}
+            if (this.roles) {
+              return Promise.resolve(this)
+            }
+            else {
+              return this.getRoles({transaction: options.transaction || null})
+                .then(roles => {
+                  roles = roles || []
+                  this.roles = roles
+                  this.setDataValue('roles', roles)
+                  this.set('roles', roles)
+                  return this
+                })
+            }
+          }
         }
       }
     }

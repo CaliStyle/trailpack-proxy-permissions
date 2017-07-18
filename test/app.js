@@ -77,6 +77,24 @@ const App = {
                 },
                 findByIdDefault: ModelPermissions.config(app, Sequelize).options.classMethods.findByIdDefault,
                 findOneDefault: ModelPermissions.config(app, Sequelize).options.classMethods.findOneDefault
+              },
+              instanceMethods: {
+                resolveRoles: function(options) {
+                  options = options || {}
+                  if (this.roles) {
+                    return Promise.resolve(this)
+                  }
+                  else {
+                    return this.getRoles({transaction: options.transaction || null})
+                      .then(roles => {
+                        roles = roles || []
+                        this.roles = roles
+                        this.setDataValue('roles', roles)
+                        this.set('roles', roles)
+                        return this
+                      })
+                  }
+                }
               }
             }
           }

@@ -127,13 +127,9 @@ module.exports = class PermissionService extends Service {
     return this.app.services.ProxyPermissionsService.resolveUser(user, { transaction: options.transaction || null })
       .then(user => {
         resUser = user
-        if (!resUser.roles || resUser.roles.length == 0) {
-          return resUser.getRoles({transaction: options.transaction || null})
-        }
-        return resUser.roles
+        return resUser.resolveRoles({transaction: options.transaction || null})
       })
-      .then(roles => {
-        resUser.set('roles', roles)
+      .then(() => {
         return resUser.hasRole(roleName, {transaction: options.transaction || null})
       })
       .then(hasRole => {
@@ -143,8 +139,10 @@ module.exports = class PermissionService extends Service {
         }
         return resUser.roles
       })
-      .then((newRoles) => {
-        resUser.set('roles', newRoles)
+      .then(roles => {
+        resUser.roles = roles
+        resUser.setDataValue('roles', roles)
+        resUser.set('roles', roles)
         return resUser
       })
   }
@@ -160,13 +158,9 @@ module.exports = class PermissionService extends Service {
     return this.app.services.ProxyPermissionsService.resolveUser(user, { transaction: options.transaction || null })
       .then(user => {
         resUser = user
-        if (!resUser.roles || resUser.roles.length == 0) {
-          return resUser.getRoles({transaction: options.transaction || null})
-        }
-        return resUser.roles
+        return resUser.resolveRoles({transaction: options.transaction || null})
       })
-      .then(roles => {
-        resUser.set('roles', roles)
+      .then(() => {
         return resUser.hasRole(roleName, {transaction: options.transaction || null})
       })
       .then(hasRole => {
@@ -176,8 +170,10 @@ module.exports = class PermissionService extends Service {
         }
         return resUser.roles
       })
-      .then((newRoles) => {
-        resUser.set('roles', newRoles)
+      .then(roles => {
+        resUser.roles = roles
+        resUser.setDataValue('roles', roles)
+        resUser.set('roles', roles)
         return resUser
       })
   }
