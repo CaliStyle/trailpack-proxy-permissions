@@ -16,6 +16,7 @@ describe('UserController', () => {
       .send({username: 'admin', password: 'admin1234'})
       .expect(200)
       .end((err, res) => {
+        console.log('BROKE',err, res.body)
         userID = res.body.user.id
         console.log(res.body)
         done()
@@ -36,6 +37,7 @@ describe('UserController', () => {
       .expect(200)
       .end((err, res) => {
         // console.log('THIS USER',res.body)
+        assert.equal(res.body.id, userID)
         assert.equal(res.body.email, 'scott@scott.com')
         done()
       })
@@ -97,9 +99,7 @@ describe('UserController', () => {
       .set('Accept', 'application/json') //set header for this test
       .expect(200)
       .end((err, res) => {
-        // console.log('THIS USER',res.body)
         assert.equal(res.body.id, userID)
-        assert.equal(res.body.passports.length, 1)
         assert.equal(res.body.roles.length, 2)
         assert.equal(res.body.roles[0].name, 'admin')
         assert.equal(res.body.roles[1].name, 'test')
@@ -114,7 +114,6 @@ describe('UserController', () => {
       .end((err, res) => {
         // console.log('THIS USER',res.body)
         assert.equal(res.body.id, userID)
-        assert.equal(res.body.passports.length, 1)
         assert.equal(res.body.roles.length, 1)
         assert.equal(res.body.roles[0].name, 'admin')
         done()

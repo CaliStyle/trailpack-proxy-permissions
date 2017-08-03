@@ -8,80 +8,96 @@ module.exports = class PermissionService extends Service {
   /**
    *
    * @param roleName
+   * @param options
    * @returns {Promise.<T>|*}
    */
-  findRole(roleName) {
+  findRole(roleName, options) {
+    options = options || {}
     return this.app.orm['Role']
       .findOne({
         where: {
           name: roleName
-        }
+        },
+        transaction: options.transaction || null
       })
   }
 
   /**
    *
-   * @param resource_name
-   * @returns {T|*}
+   * @param resourceName
+   * @param options
+   * @returns {Promise.<T>|*}
    */
-  findResource(resourceName) {
+  findResource(resourceName, options) {
+    options = options || {}
     return this.app.orm['Resource']
       .findOne({
         where: {
           name: resourceName
-        }
+        },
+        transaction: options.transaction || null
       })
   }
 
   /**
    *
    * @param roleName
-   * @param resource_name
+   * @param resourceName
    * @param actionName
    * @param relation
+   * @param options
    * @returns {permission}
    */
-  grant(roleName, resourceName, actionName, relation) {
+  grant(roleName, resourceName, actionName, relation, options) {
+    options = options || {}
     return this.app.orm['Permission']
       .create({
         role_name: roleName,
         resource_name: resourceName,
         action: actionName,
         relation: relation || null
+      }, {
+        transaction: options.transaction || null
       })
   }
 
   /**
    *
    * @param roleName
-   * @param resource_name
+   * @param resourceName
    * @param actionName
+   * @param options
    * @returns {*}
    */
-  revoke(roleName, resourceName, actionName) {
+  revoke(roleName, resourceName, actionName, options) {
+    options = options || {}
     return this.app.orm['Permission'].destroy({
       where: {
         role_name: roleName,
         resource_name: resourceName,
         action: actionName
-      }
+      },
+      transaction: options.transaction || null
     })
   }
 
   /**
    *
    * @param roleName
-   * @param resource_name
+   * @param resourceName
    * @param actionName
+   * @param options
    * @returns {T|*}
    */
-  isAllowed(roleName, resourceName, actionName) {
+  isAllowed(roleName, resourceName, actionName, options) {
+    options = options || {}
     return this.app.orm['Permission'].findOne({
       where: {
         role_name: roleName,
         resource_name: resourceName,
         action: actionName
-      }
+      },
+      transaction: options.transaction || null
     })
   }
 
@@ -90,13 +106,15 @@ module.exports = class PermissionService extends Service {
    * @param user
    * @param resourceName
    * @param actionName
+   * @param options
    * @returns {Promise.<TResult>|*}
    */
-  isUserAllowed(user, resourceName, actionName) {
+  isUserAllowed(user, resourceName, actionName, options) {
+    options = options || {}
     // _.get(this.app.config, 'permissions.userRoleFieldName', 'roles')
-    return this.app.services.ProxyPermissionsService.resolveUser(user)
+    return this.app.orm['User'].resolve(user, {transaction: options.transaction || null})
       .then(user => {
-        return user.getRoles()
+        return user.getRoles({transaction: options.transaction || null})
       })
       .then(roles => {
         const promises = []
@@ -123,8 +141,9 @@ module.exports = class PermissionService extends Service {
    */
   addRoleToUser(user, roleName, options) {
     options = options || {}
+    const User = this.app.orm['User']
     let resUser
-    return this.app.services.ProxyPermissionsService.resolveUser(user, { transaction: options.transaction || null })
+    return User.resolve(user, { transaction: options.transaction || null })
       .then(user => {
         resUser = user
         return resUser.resolveRoles({transaction: options.transaction || null})
@@ -135,7 +154,7 @@ module.exports = class PermissionService extends Service {
       .then(hasRole => {
         if (!hasRole) {
           return resUser.addRole(roleName, {transaction: options.transaction || null})
-            .then(() => resUser.getRoles())
+            .then(() => resUser.getRoles({transaction: options.transaction || null}))
         }
         return resUser.roles
       })
@@ -151,11 +170,13 @@ module.exports = class PermissionService extends Service {
    *
    * @param user
    * @param roleName
+   * @param options
    */
   removeRoleFromUser(user, roleName, options) {
     options = options || {}
+    const User = this.app.orm['User']
     let resUser
-    return this.app.services.ProxyPermissionsService.resolveUser(user, { transaction: options.transaction || null })
+    return User.resolve(user, { transaction: options.transaction || null })
       .then(user => {
         resUser = user
         return resUser.resolveRoles({transaction: options.transaction || null})
@@ -166,7 +187,7 @@ module.exports = class PermissionService extends Service {
       .then(hasRole => {
         if (hasRole) {
           return resUser.removeRole(roleName, {transaction: options.transaction || null})
-            .then(() => resUser.getRoles())
+            .then(() => resUser.getRoles({transaction: options.transaction || null}))
         }
         return resUser.roles
       })

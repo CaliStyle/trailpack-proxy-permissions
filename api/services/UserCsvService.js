@@ -125,7 +125,8 @@ module.exports = class UserCsvService extends Service {
   processUserUpload(uploadId) {
     return new Promise((resolve, reject) => {
       const UserUpload = this.app.orm.UserUpload
-      let usersTotal = 0
+      const errors = []
+      let usersTotal = 0, errorsTotal = 0
       UserUpload.batch({
         where: {
           upload_id: uploadId
@@ -143,13 +144,16 @@ module.exports = class UserCsvService extends Service {
             // roles: user.roles
           }
           return this.app.orm['User'].create(create)
-          // return this.app.services.UserService.create(create)
+            .then(() => {
+              usersTotal++
+              return
+            })
+            .catch(err => {
+              errorsTotal++
+              errors.push(err.message)
+              return
+            })
         })
-          .then(results => {
-            // Calculate Totals
-            usersTotal = usersTotal + results.length
-            return results
-          })
       })
         .then(results => {
           return UserUpload.destroy({where: {upload_id: uploadId }})
@@ -157,7 +161,9 @@ module.exports = class UserCsvService extends Service {
         .then(destroyed => {
           const results = {
             upload_id: uploadId,
-            users: usersTotal
+            users: usersTotal,
+            errors_count: errorsTotal,
+            errors: errors
           }
           this.app.services.ProxyEngineService.publish('user_process.complete', results)
           return resolve(results)

@@ -76,7 +76,8 @@ const App = {
                   })
                 },
                 findByIdDefault: ModelPermissions.config(app, Sequelize).options.classMethods.findByIdDefault,
-                findOneDefault: ModelPermissions.config(app, Sequelize).options.classMethods.findOneDefault
+                findOneDefault: ModelPermissions.config(app, Sequelize).options.classMethods.findOneDefault,
+                resolve: ModelPassport.config(app, Sequelize).options.classMethods.resolve,
               },
               instanceMethods: {
                 resolveRoles: function(options) {
