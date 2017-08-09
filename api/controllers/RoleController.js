@@ -55,7 +55,10 @@ module.exports = class RoleController extends Controller {
         if (!role) {
           throw new Errors.FoundError(Error(`Role name '${ role }' not found`))
         }
-        return res.json(role)
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, role)
+      })
+      .then(result => {
+        return res.json(result)
       })
       .catch(err => {
         return res.serverError(err)
@@ -82,7 +85,10 @@ module.exports = class RoleController extends Controller {
     })
       .then(roles => {
         this.app.services.ProxyEngineService.paginate(res, roles.count, limit, offset, sort)
-        return res.json(roles.rows)
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, roles.rows)
+      })
+      .then(result => {
+        return res.json(result)
       })
       .catch(err => {
         return res.serverError(err)

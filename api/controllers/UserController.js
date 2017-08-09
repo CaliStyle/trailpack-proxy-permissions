@@ -52,13 +52,25 @@ module.exports = class UserController extends Controller {
           model: this.app.orm['Event'],
           as: 'events'
         }
+      ],
+      order: [
+        [
+          {
+            model: this.app.orm['Event'],
+            as: 'events'
+          },
+          'created_at', 'DESC'
+        ]
       ]
     })
       .then(user => {
         if (!user) {
           throw new Errors.FoundError(Error(`User id ${id} not found`))
         }
-        return res.json(user)
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, user)
+      })
+      .then(result => {
+        return res.json(result)
       })
       .catch(err => {
         return res.serverError(err)
@@ -86,7 +98,11 @@ module.exports = class UserController extends Controller {
     })
       .then(users => {
         this.app.services.ProxyEngineService.paginate(res, users.count, limit, offset, sort)
-        return res.json(users.rows)
+        // return res.json(users.rows)
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, users.rows)
+      })
+      .then(result => {
+        return res.json(result)
       })
       .catch(err => {
         return res.serverError(err)
@@ -138,7 +154,10 @@ module.exports = class UserController extends Controller {
     })
       .then(users => {
         this.app.services.ProxyEngineService.paginate(res, users.count, limit, offset, sort)
-        return res.json(users.rows)
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, users.rows)
+      })
+      .then(result => {
+        return res.json(result)
       })
       .catch(err => {
         return res.serverError(err)
@@ -164,7 +183,10 @@ module.exports = class UserController extends Controller {
         return user.save()
       })
       .then(user => {
-        return res.json(user)
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, user)
+      })
+      .then(result => {
+        return res.json(result)
       })
       .catch(err => {
         return res.serverError(err)
@@ -222,23 +244,25 @@ module.exports = class UserController extends Controller {
 
   roles(req, res) {
     // const Role = this.app.orm['Role']
-    const userId = req.params.id
+    let userId = req.params.id
 
     if (!userId && !req.user) {
       const err = new Error('A user id and a user in session are required')
       return res.send(401, err)
     }
-
-    // const limit = req.query.limit || 10
-    // const offset = req.query.offset || 0
-    // const sort = req.query.sort || 'created_at DESC'
+    if (!userId) {
+      userId = req.user.id
+    }
 
     this.app.orm['User'].resolve(userId)
       .then(user => {
         return user.getRoles()
       })
       .then(roles => {
-        return res.json(roles)
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, roles)
+      })
+      .then(result => {
+        return res.json(result)
       })
       .catch(err => {
         return res.serverError(err)
@@ -253,7 +277,10 @@ module.exports = class UserController extends Controller {
   addRole(req, res) {
     this.app.services.PermissionService.addRoleToUser(req.params.id, req.params.role)
       .then(user => {
-        return res.json(user)
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, user)
+      })
+      .then(result => {
+        return res.json(result)
       })
       .catch(err => {
         return res.serverError(err)
@@ -268,7 +295,10 @@ module.exports = class UserController extends Controller {
   removeRole(req, res) {
     this.app.services.PermissionService.removeRoleFromUser(req.params.id, req.params.role)
       .then(user => {
-        return res.json(user)
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, user)
+      })
+      .then(result => {
+        return res.json(result)
       })
       .catch(err => {
         return res.serverError(err)
@@ -292,7 +322,10 @@ module.exports = class UserController extends Controller {
     }
     Event.findById(eventId)
       .then(event => {
-        return res.json(event)
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, event)
+      })
+      .then(result => {
+        return res.json(result)
       })
       .catch(err => {
         return res.serverError(err)
@@ -328,7 +361,10 @@ module.exports = class UserController extends Controller {
     })
       .then(events => {
         this.app.services.ProxyEngineService.paginate(res, events.count, limit, offset, sort)
-        return res.json(events.rows)
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, events.rows)
+      })
+      .then(result => {
+        return res.json(result)
       })
       .catch(err => {
         return res.serverError(err)
