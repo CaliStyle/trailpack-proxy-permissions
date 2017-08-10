@@ -16,7 +16,7 @@ describe('UserController', () => {
       .send({username: 'admin', password: 'admin1234'})
       .expect(200)
       .end((err, res) => {
-        console.log('BROKE',err, res.body)
+        // console.log('BROKE',err, res.body)
         userID = res.body.user.id
         console.log(res.body)
         done()
@@ -126,6 +126,16 @@ describe('UserController', () => {
       .expect(200)
       .end((err, res) => {
         // console.log('THIS USER', res.body)
+        assert.ok(res.headers['x-pagination-total'])
+        assert.ok(res.headers['x-pagination-pages'])
+        assert.ok(res.headers['x-pagination-page'])
+        assert.ok(res.headers['x-pagination-limit'])
+        assert.ok(res.headers['x-pagination-offset'])
+        assert.equal(res.headers['x-pagination-total'], '1')
+        assert.equal(res.headers['x-pagination-offset'], '0')
+        assert.equal(res.headers['x-pagination-limit'], '10')
+        assert.equal(res.headers['x-pagination-page'], '1')
+        assert.equal(res.headers['x-pagination-pages'], '1')
         assert.equal(res.body.length, 1)
         assert.equal(res.body[0].name, 'admin')
         done()

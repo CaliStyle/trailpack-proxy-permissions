@@ -76,6 +76,12 @@ module.exports = class UserController extends Controller {
         return res.serverError(err)
       })
   }
+
+  /**
+   *
+   * @param req
+   * @param res
+   */
   findAll(req, res) {
     const orm = this.app.orm
     const User = orm['User']
@@ -109,6 +115,11 @@ module.exports = class UserController extends Controller {
       })
   }
 
+  /**
+   *
+   * @param req
+   * @param res
+   */
   search(req, res) {
     const orm = this.app.orm
     const User = orm['User']
@@ -164,6 +175,11 @@ module.exports = class UserController extends Controller {
       })
   }
 
+  /**
+   *
+   * @param req
+   * @param res
+   */
   update(req, res) {
     // const UserService = this.app.services.UserService
     let id = req.params.id
@@ -242,6 +258,11 @@ module.exports = class UserController extends Controller {
     //
   }
 
+  /**
+   *
+   * @param req
+   * @param res
+   */
   roles(req, res) {
     // const Role = this.app.orm['Role']
     let userId = req.params.id
@@ -254,12 +275,31 @@ module.exports = class UserController extends Controller {
       userId = req.user.id
     }
 
-    this.app.orm['User'].resolve(userId)
-      .then(user => {
-        return user.getRoles()
-      })
+    const orm = this.app.orm
+    const Role = orm['Role']
+    const limit = req.query.limit || 10
+    const offset = req.query.offset || 0
+    const sort = req.query.sort || 'created_at DESC'
+
+    Role.findAndCount({
+      order: sort,
+      offset: offset,
+      limit: limit,
+      where: {
+        '$users.id$': userId,
+      },
+      include: [
+        {
+          model: this.app.orm['User'],
+          as: 'users',
+          attributes: ['id'],
+          duplicating: false
+        }
+      ]
+    })
       .then(roles => {
-        return this.app.services.ProxyPermissionsService.sanitizeResult(req, roles)
+        this.app.services.ProxyEngineService.paginate(res, roles.count, limit, offset, sort)
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, roles.rows)
       })
       .then(result => {
         return res.json(result)
@@ -267,6 +307,19 @@ module.exports = class UserController extends Controller {
       .catch(err => {
         return res.serverError(err)
       })
+    // this.app.orm['User'].resolve(userId)
+    //   .then(user => {
+    //     return user.getRoles()
+    //   })
+    //   .then(roles => {
+    //     return this.app.services.ProxyPermissionsService.sanitizeResult(req, roles)
+    //   })
+    //   .then(result => {
+    //     return res.json(result)
+    //   })
+    //   .catch(err => {
+    //     return res.serverError(err)
+    //   })
   }
 
   /**

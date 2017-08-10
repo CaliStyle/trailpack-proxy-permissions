@@ -28,9 +28,9 @@ module.exports = class User extends Model {
               as: 'roles',
               through: {
                 model: models.UserRole,
-                foreignKey: 'user_id'
               },
-              constraints: false
+              foreignKey: 'user_id'
+              // constraints: false
             })
             models.User.hasMany(models.Event, {
               as: 'events',
