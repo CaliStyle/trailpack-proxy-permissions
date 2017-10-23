@@ -322,7 +322,7 @@ const App = {
     },
     proxyEngine: {
       live_mode: false,
-      worker: 'test'
+      profile: 'test'
     },
     web: {
       express: require('express'),
