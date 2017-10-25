@@ -80,9 +80,15 @@ const App = {
                 resolve: ModelPassport.config(app, Sequelize).options.classMethods.resolve,
               },
               instanceMethods: {
+                getSalutation: ModelPassport.config(app, Sequelize).options.instanceMethods.getSalutation,
+                resolvePassports: ModelPassport.config(app, Sequelize).options.instanceMethods.resolvePassports,
                 resolveRoles: function(options) {
                   options = options || {}
-                  if (this.roles) {
+                  if (
+                    this.roles
+                    && this.roles.every(t => t instanceof app.orm['Role'])
+                    && options.reload !== true
+                  ) {
                     return Promise.resolve(this)
                   }
                   else {
@@ -310,7 +316,7 @@ const App = {
       packs: [
         require('trailpack-router'),
         require('trailpack-express'),
-        require('trailpack-sequelize'),
+        require('trailpack-proxy-sequelize'),
         require('trailpack-proxy-passport'),
         require('trailpack-footprints'),
         require('trailpack-proxy-engine'),

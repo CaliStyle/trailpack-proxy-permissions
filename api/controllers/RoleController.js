@@ -74,7 +74,7 @@ module.exports = class RoleController extends Controller {
     const Role = orm['Role']
     const limit = req.query.limit || 10
     const offset = req.query.offset || 0
-    const sort = req.query.sort || 'created_at DESC'
+    const sort = req.query.sort || [['created_at', 'DESC']]
     const where = this.app.services.ProxyEngineService.jsonCritera(req.query.where)
 
     Role.findAndCount({

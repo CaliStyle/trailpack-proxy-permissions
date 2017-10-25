@@ -6,19 +6,13 @@ const queryDefaults = require('../utils/queryDefaults')
 
 module.exports = class User extends Model {
   static config(app, Sequelize) {
-    const config = {
+    return {
       options: {
         underscored: true,
         hooks: {
           afterCreate: [
-            (values, options, fn) => {
-              app.services.PermissionService.addRoleToUser(values, app.config.proxyPermissions.defaultRegisteredRole, options)
-                .then(values => {
-                  fn(null, values)
-                })
-                .catch(err => {
-                  fn(err)
-                })
+            (values, options) => {
+              return app.services.PermissionService.addRoleToUser(values, app.config.proxyPermissions.defaultRegisteredRole, options)
             }
           ]
         },
@@ -59,7 +53,11 @@ module.exports = class User extends Model {
         instanceMethods: {
           resolveRoles: function(options) {
             options = options || {}
-            if (this.roles) {
+            if (
+              this.roles
+              && this.roles.every(t => t instanceof app.orm['Role'])
+              && options.reload !== true
+            ) {
               return Promise.resolve(this)
             }
             else {
@@ -76,7 +74,6 @@ module.exports = class User extends Model {
         }
       }
     }
-    return config
   }
 
   static schema(app, Sequelize) {

@@ -6,6 +6,18 @@
 module.exports = {
   type: 'misc',
   /**
+   * API and config resources provided by this Trailpack.
+   */
+  provides: {
+    api: {
+      controllers: ['RoleController','UserController'],
+      services: ['PermissionService','ProxyPermissionService'],
+      models: ['Permission','Resource','Role','User','UserItem','UserRole','UserUpload']
+    },
+    config: [ ]
+  },
+
+  /**
    * Configure the lifecycle of this pack; that is, how it boots up, and which
    * order it loads relative to other trailpacks.
    */
@@ -16,7 +28,7 @@ module.exports = {
        * method is invoked on this Trailpack
        */
       listen: [
-        'trailpack:sequelize:configured',
+        'trailpack:proxy-sequelize:configured',
         'trailpack:proxy-engine:configured',
         'trailpack:proxy-passport:configured',
         // 'trailpack:footprints:configured'
@@ -31,7 +43,7 @@ module.exports = {
     },
     initialize: {
       listen: [
-        'trailpack:sequelize:initialized',
+        'trailpack:proxy-sequelize:initialized',
         'trailpack:proxy-engine:initialized',
         'trailpack:proxy-passport:initialized'
       ],

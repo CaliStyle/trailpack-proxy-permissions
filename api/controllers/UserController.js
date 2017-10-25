@@ -87,7 +87,7 @@ module.exports = class UserController extends Controller {
     const User = orm['User']
     const limit = req.query.limit || 10
     const offset = req.query.offset || 0
-    const sort = req.query.sort || 'created_at DESC'
+    const sort = req.query.sort || [['created_at','DESC']]
     const where = this.app.services.ProxyEngineService.jsonCritera(req.query.where)
 
     User.findAndCount({
@@ -125,7 +125,7 @@ module.exports = class UserController extends Controller {
     const User = orm['User']
     const limit = req.query.limit || 10
     const offset = req.query.offset || 0
-    const sort = req.query.sort || 'created_at DESC'
+    const sort = req.query.sort || [['created_at', 'DESC']]
     const term = req.query.term
 
     User.findAndCount({
@@ -279,7 +279,7 @@ module.exports = class UserController extends Controller {
     const Role = orm['Role']
     const limit = req.query.limit || 10
     const offset = req.query.offset || 0
-    const sort = req.query.sort || 'created_at DESC'
+    const sort = req.query.sort || [['created_at', 'DESC']]
 
     Role.findAndCount({
       order: sort,
@@ -307,19 +307,6 @@ module.exports = class UserController extends Controller {
       .catch(err => {
         return res.serverError(err)
       })
-    // this.app.orm['User'].resolve(userId)
-    //   .then(user => {
-    //     return user.getRoles()
-    //   })
-    //   .then(roles => {
-    //     return this.app.services.ProxyPermissionsService.sanitizeResult(req, roles)
-    //   })
-    //   .then(result => {
-    //     return res.json(result)
-    //   })
-    //   .catch(err => {
-    //     return res.serverError(err)
-    //   })
   }
 
   /**
@@ -401,7 +388,7 @@ module.exports = class UserController extends Controller {
 
     const limit = req.query.limit || 10
     const offset = req.query.offset || 0
-    const sort = req.query.sort || 'created_at DESC'
+    const sort = req.query.sort || [['created_at', 'DESC']]
 
     Event.findAndCount({
       order: sort,

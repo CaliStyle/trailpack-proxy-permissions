@@ -12,7 +12,7 @@ const helpers = require('proxy-engine-helpers')
 module.exports = class UserUpload extends Model {
 
   static config (app, Sequelize) {
-    const config = {
+    return {
       migrate: 'drop', //override default models configurations if needed
       store: 'uploads',
       options: {
@@ -51,11 +51,10 @@ module.exports = class UserUpload extends Model {
         }
       }
     }
-    return config
   }
 
   static schema (app, Sequelize) {
-    const schema = {
+    return {
       // Upload ID
       upload_id: {
         type: Sequelize.STRING
@@ -79,6 +78,5 @@ module.exports = class UserUpload extends Model {
         defaultValue: []
       })
     }
-    return schema
   }
 }

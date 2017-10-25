@@ -16,10 +16,10 @@ module.exports = class ProxyPermissionsTrailpack extends Trailpack {
         new Error('config.proxyPermissions is absent, check it\'s present and loaded under index.js'))
     }
     if (!_.includes(_.keys(this.app.packs), 'express')) {
-      return Promise.reject(new Error('This Trailpack only works for express!'))
+      return Promise.reject(new Error('This Trailpack currently only works with express!'))
     }
-    if (!_.includes(_.keys(this.app.packs), 'sequelize')) {
-      return Promise.reject(new Error('This Trailpack only works for Sequelize!'))
+    if (!_.includes(_.keys(this.app.packs), 'proxy-sequelize')) {
+      return Promise.reject(new Error('This Trailpack currently only works with trailpack-proxy-sequelize!'))
     }
     if (!_.includes(_.keys(this.app.packs), 'proxy-passport')) {
       return Promise.reject(new Error('This Trailpack requires proxy-passport!'))
