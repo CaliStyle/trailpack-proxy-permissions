@@ -149,6 +149,9 @@ const App = {
         migrate: 'drop'
       }
     },
+    log: {
+      logger: new smokesignals.Logger('debug')
+    },
     proxyPassport: {
       strategies: {
         //Enable local strategy
