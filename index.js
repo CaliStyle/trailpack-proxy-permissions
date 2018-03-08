@@ -38,8 +38,9 @@ module.exports = class ProxyPermissionsTrailpack extends Trailpack {
       this.app.log.warn('ProxyPermissions Routes are unlocked! add \'*\' : [\'CheckPermissions.checkRoute\'] to config/policies.js')
     }
     return Promise.all([
-      lib.Validator.validateConfig(this.app.config.proxyPermissions),
-      lib.Validator.validateMiddleware(this.app.config.web.middlewares)
+      lib.Validator.validateDatabase.config(this.app.config.database),
+      lib.Validator.validateConfig.validateConfig(this.app.config.proxyPermissions),
+      lib.Validator.validateMiddleware.validateMiddleware(this.app.config.web.middlewares)
     ])
   }
 

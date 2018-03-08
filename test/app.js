@@ -24,8 +24,13 @@ const stores = {
   }
 }
 
-if (DIALECT == 'postgres') {
+if (DIALECT === 'postgres') {
   stores.sqlitedev = {
+    database: 'ProxyPermissions',
+    host: '127.0.0.1',
+    dialect: 'postgres'
+  }
+  stores.uploads = {
     database: 'ProxyPermissions',
     host: '127.0.0.1',
     dialect: 'postgres'
@@ -35,6 +40,12 @@ else {
   stores.sqlitedev = {
     database: 'ProxyPermissions',
     storage: './test/test.sqlite',
+    host: '127.0.0.1',
+    dialect: 'sqlite'
+  }
+  stores.uploads = {
+    database: 'ProxyPermissions',
+    storage: './test/test.uploads.sqlite',
     host: '127.0.0.1',
     dialect: 'sqlite'
   }
