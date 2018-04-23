@@ -180,6 +180,24 @@ module.exports = class UserController extends Controller {
    * @param req
    * @param res
    */
+  create(req, res) {
+
+    this.app.orm['User'].create(req.body)
+      .then(user => {
+        return this.app.services.ProxyPermissionsService.sanitizeResult(req, user)
+      })
+      .then(result => {
+        return res.json(result)
+      })
+      .catch(err => {
+        return res.serverError(err)
+      })
+  }
+  /**
+   *
+   * @param req
+   * @param res
+   */
   update(req, res) {
     // const UserService = this.app.services.UserService
     let id = req.params.id
