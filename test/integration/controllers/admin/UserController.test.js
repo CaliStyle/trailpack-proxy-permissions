@@ -30,7 +30,7 @@ describe('Admin UserController', () => {
 
   it('It should update the user\'s name', (done) => {
     adminUser
-      .post('/api/user')
+      .put('/api/user')
       .set('Accept', 'application/json') //set header for this test
       .send({
         email: 'scott@scott.com'
